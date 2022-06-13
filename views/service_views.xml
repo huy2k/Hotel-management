@@ -1,0 +1,39 @@
+<odoo>
+
+        <record id="hotel_service_form" model="ir.ui.view">
+            <field name="name">hotel1.service:form</field>
+            <field name="model">hotel1.service</field>
+            <field name="arch" type="xml">
+                <form>
+                    <sheet>
+                        <group>
+                            <field name="name"/>
+                            <field name="service_type"/>
+                            <field name="list_price" />
+<!--                            <field name="price"/>-->
+<!--                          <field name="currency_id"/>-->
+                        </group>
+                    </sheet>
+                </form>
+            </field>
+
+        </record>
+        <record id="action_hotel_service" model="ir.actions.act_window">
+            <field name="name">service</field>
+            <field name="res_model">hotel1.service</field>
+        </record>
+
+        <record id="hotel_service_tree" model="ir.ui.view">
+            <field name="name">hotel1.service.tree</field>
+            <field name="model">hotel1.service</field>
+            <field name="arch" type="xml">
+                <tree>
+                    <field name="name"/>
+                    <field name="service_type"/>
+                    <field name="list_price"/>
+
+                </tree>
+            </field>
+        </record>
+
+</odoo>

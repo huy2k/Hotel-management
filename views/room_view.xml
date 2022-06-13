@@ -1,0 +1,43 @@
+<odoo>
+  <record id="hotel_room_form" model="ir.ui.view">
+    <field name="name">hotel1.room:form</field>
+    <field name="model">hotel1.room</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="room_type"/>
+             <field name="list_price"/>
+            <field name="capacity"/>
+            <field name="status"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+  </record>
+
+  <record id="hotel_room_tree" model="ir.ui.view">
+    <field name="name">hotel1.room.tree</field>
+    <field name="model">hotel1.room</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name" optional="True"/>
+        <field name="room_type"/>
+        <field name="status"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_hotel_room" model="ir.actions.act_window">
+    <field name="name">Room</field>
+    <field name="res_model">hotel1.room</field>
+    <field name="view_mode">tree,form</field>
+     <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        No data to display.
+      </p>
+    </field>
+  </record>
+
+</odoo>

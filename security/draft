@@ -1,0 +1,4 @@
+my_hotel.access_hotel1_booking,access_hotel1_booking,my_hotel.model_hotel1_booking,base.group_user,1,1,1,1
+my_hotel.access_hotel1_room_line,access_hotel1_room_line,my_hotel.model_hotel1_room_line,base.group_user,1,1,1,1
+my_hotel.access_hotel_booking_line,access_hotel_booking_line,my_hotel.model_hotel_booking_line,base.group_user,1,1,1,1
+my_hotel.access_hotel1_service_line,access_hotel1_service_line,my_hotel.model_hotel1_service_line,base.group_user,1,1,1,1

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+  <data noupdate="1">
+
+    <record id="hotel_booking_sequence" model="ir.sequence">
+      <field name="name">Booking</field>
+      <field name="code">hotel1.booking.seq</field>
+      <field name="prefix">booking</field>
+      <field name="padding">7</field>
+    </record>
+
+  </data>
+</odoo>

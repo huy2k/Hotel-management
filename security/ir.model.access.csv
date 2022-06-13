@@ -1,0 +1,13 @@
+id,name,model_id:id,group_id:id,perm_read,perm_write,perm_create,perm_unlink
+hotel.access_hotel1_room,access_hotel1_room,hotel.model_hotel1_room,base.group_user,1,1,1,1
+hotel.access_hotel1_room_type,access_hotel1_room_type,hotel.model_hotel1_room_type,base.group_user,1,1,1,1
+hotel.access_hotel1_room_status,access_hotel1_room_status,hotel.model_hotel1_room_status,base.group_user,1,1,1,1
+hotel.access_hotel1_service,access_hotel1_service,hotel.model_hotel1_service,base.group_user,1,1,1,1
+hotel.access_hotel1_service_type,access_hotel1_service_type,hotel.model_hotel1_service_type,base.group_user,1,1,1,1
+hotel.access_hotel1_customer,access_hotel1_customer,hotel.model_hotel1_customer,base.group_user,1,1,1,1
+hotel.access_hotel1_employee,access_hotel1_employee,hotel.model_hotel1_employee,base.group_user,1,1,1,1
+hotel.access_hotel1_folio,access_hotel1_folio,hotel.model_hotel1_folio,base.group_user,1,1,1,1
+hotel.access_hotel1_service_line,access_hotel1_service_line,hotel.model_hotel1_service_line,base.group_user,1,1,1,1
+hotel.access_hotel1_reservation,access_hotel1_reservation,hotel.model_hotel1_reservation,base.group_user,1,1,1,1
+hotel.access_hotel1_reservation_line,access_hotel1_reservation_line,hotel.model_hotel1_reservation_line,base.group_user,1,1,1,1
+hotel.access_hotel1_room_reservation_line,access_hotel1_room_reservation_line,hotel.model_hotel1_room_reservation_line,base.group_user,1,1,1,1

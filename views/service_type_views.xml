@@ -1,0 +1,41 @@
+<odoo>
+
+  <record id="hotel_service_type_form" model="ir.ui.view">
+    <field name="name">hotel1.service:form</field>
+    <field name="model">hotel1.service_type</field>
+    <field name="arch" type="xml">
+      <form>
+        <sheet>
+          <group>
+            <field name="name"/>
+            <field name="description"/>
+          </group>
+        </sheet>
+      </form>
+    </field>
+
+  </record>
+
+
+  <record id="hotel_service_type_tree" model="ir.ui.view">
+    <field name="name">hotel1.service_type.tree</field>
+    <field name="model">hotel1.service_type</field>
+    <field name="arch" type="xml">
+      <tree>
+        <field name="name"/>
+        <field name="description"/>
+      </tree>
+    </field>
+  </record>
+
+  <record id="action_hotel_service_type" model="ir.actions.act_window">
+    <field name="name">Service Type</field>
+    <field name="res_model">hotel1.service_type</field>
+    <field name="view_mode">tree,form</field>
+     <field name="help" type="html">
+      <p class="o_view_nocontent_smiling_face">
+        No data to display.
+      </p>
+    </field>
+  </record>
+</odoo>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+  <data noupdate="1">
+    <record id="hotel_room_stage_0" model="hotel1.room.status">
+      <field name="name">open</field>
+      <field name="sequence">1</field>
+    </record>
+    <record id="hotel_room_stage_1" model="hotel1.room.status">
+      <field name="name">close</field>
+      <field name="sequence">2</field>
+    </record>
+    <record id="hotel_room_stage_2" model="hotel1.room.status">
+      <field name="name">booking</field>
+      <field name="sequence">3</field>
+    </record>
+
+  </data>
+</odoo>
