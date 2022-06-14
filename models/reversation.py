@@ -22,7 +22,7 @@ class Folio(models.Model):
         "Check Out",
     )
     room_type_id = fields.Many2one('hotel1.room.type', "Room type")
-    room_id = fields.Many2one("hotel1.room", ondelete="restrict", index=True)
+    room_id = fields.Many2one("hotel1.room", index=True)
     service_line_ids = fields.One2many(
         "hotel1.service.line",
         "folio_id",
@@ -47,7 +47,7 @@ class Folio(models.Model):
     duration = fields.Float(
         "Duration in Days",
         help="Number of days which will automatically "
-             "count from the check-in and check-out date. ", default=0.0
+             "count from the check-in and check-out date. ", default=1.0
     )
     # hotel_invoice_id = fields.Many2one("account.move", "Invoice", copy=False)
     additional_hours = fields.Integer(
@@ -58,7 +58,7 @@ class Folio(models.Model):
     )
     duration_dummy = fields.Float()
     price_room = fields.Float("Price Room", related="room_id.list_price")
-    total_room = fields.Float("Total room price")
+    total_room = fields.Float("Total room price", compute="computer_price_room")
     total_service = fields.Float("Total service")
     total_price = fields.Float("Total ser")
     is_invoiced = fields.Boolean(copy=False, default=False)
@@ -90,7 +90,7 @@ class Folio(models.Model):
                     )
                 )
 
-    @api.onchange("checkin_date", "checkout_date")
+    @api.onchange("checkin_date", "checkout_date", 'duration')
     def _onchange_checkin_checkout_dates(self):
         """
         When you change checkin_date or checkout_date it will checked it
@@ -116,7 +116,12 @@ class Folio(models.Model):
                 if additional_hours >= configured_addition_hours:
                     myduration += 1
         self.duration = myduration
-        self.total_room = self.room_id.list_price * myduration
+
+    @api.depends('duration', 'room_id')
+    def computer_price_room(self):
+        total = 0.0
+        total = self.price_room * self.duration
+        self.total_room = total
 
     def action_done(self):
         self.hotel_policy = 'done'
@@ -129,6 +134,10 @@ class Folio(models.Model):
         self.hotel_policy = 'picking'
 
     def write(self, vals):
+        if vals and vals.get("duration", False):
+            vals["duration"] = vals.get("duration", 0.0)
+        if vals.get("duration") and vals.get("room_id"):
+            vals["total_room"] = vals.get("duration") * vals.get("price_room")
         res = super(Folio, self).write(vals)
         reservation_line_obj = self.env["hotel1.room.reservation.line"]
         for folio in self:
@@ -244,7 +253,7 @@ class Folio(models.Model):
             'status': 'booking'
         })
 
-        vals['price_room'] = room_obj.list_price * vals.get('duration')
+        # vals['price_room'] = room_obj.list_price * vals.get('duration')
         result = super(Folio, self).create(vals)
         return result
 
@@ -270,7 +279,7 @@ class Folio(models.Model):
         room_ids = []
         for room in hotel_room_ids:
             room_ids.append(room.id)
-        domain = {"room_id": [("id", "in", room_ids)]}
+        domain = {"room_id": ['&', ("id", "in", room_ids), ('status', '=', 'open')]}
         return {"domain": domain}
 
 

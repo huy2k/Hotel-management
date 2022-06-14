@@ -64,6 +64,7 @@
                 />
                 <field name="checkin_date"/>
                 <field name="checkout_date"/>
+                <field name="duration" readonly="1"/>
               </group>
               <newline/>
               <group colspan="4" col="4" invisible="1">
@@ -72,15 +73,15 @@
                 <field name="duration_dummy" invisible="1"/>
               </group>
               <separator string="Đặt phòng" colspan="4"/>
-              <field
-                name="room_type_id"
-                colspan="4"
-                string="Room Line"
-                attrs="{'readonly': [('hotel_policy', '!=', 'prepaid'),('hotel_policy', '!=', 'manual')]}"
-              />
+
               <group>
+                <field
+                  name="room_type_id"
+                  colspan="4"
+                  string="Room Line"
+                  attrs="{'readonly': ['|', ('hotel_policy', '!=', 'prepaid'),('hotel_policy', '!=', 'manual')]}"
+                />
                 <field name="room_id"/>
-                <field name="duration" readonly="1"/>
                 <field name="price_room" readonly="True"/>
                 <field name="total_room" readonly="1"/>
               </group>
