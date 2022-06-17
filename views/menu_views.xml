@@ -19,9 +19,9 @@
   <!--   <menuitem id="hotel1_booking_menu" name="Booking"  action="my_hotel.hotel1_booking_action"-->
   <!--            parent="hotel_management_menu"/>-->
   <menuitem id="hotel1_folio_menu" name="Folio" action="hotel.hotel1_folio_action"
-            parent="hotel_management_menu"/>
+            parent="hotel_management_menu" sequence="4"/>
   <menuitem
-    name="Reservations_menu"
+    name="Reservations"
     id="menu_action_hotel_reservation"
     action="action_hotel_reservation_tree_all"
     parent="hotel_management_menu"

@@ -2,8 +2,6 @@
 
 from datetime import timedelta
 
-from dateutil.relativedelta import relativedelta
-
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -109,11 +107,6 @@ class HotelReservation(models.Model):
             )
         return super(HotelReservation, self).unlink()
 
-    def copy(self):
-        ctx = dict(self._context) or {}
-        ctx.update({"duplicate": True})
-        return super(HotelReservation, self.with_context(ctx)).copy()
-
     @api.constrains("reservation_line", "adults", "children")
     def _check_reservation_rooms(self):
         """
@@ -159,6 +152,7 @@ class HotelReservation(models.Model):
                 raise ValidationError(
                     _("""Check-out date should be greater """ """than Check-in date.""")
                 )
+
     @api.model
     def create(self, vals):
         """
@@ -167,7 +161,7 @@ class HotelReservation(models.Model):
         @param vals: dictionary of fields value.
         """
         vals["reservation_no"] = (
-            self.env["ir.sequence"].next_by_code("hotel1.reservation") or "New"
+            self.env["ir.sequence"].next_by_code("hotel1.reservation")
         )
         return super(HotelReservation, self).create(vals)
 
@@ -183,7 +177,6 @@ class HotelReservation(models.Model):
         @return: new record set for hotel room reservation line.
         """
         reservation_line_obj = self.env["hotel1.room.reservation.line"]
-        vals = {}
         for reservation in self:
             reserv_checkin = reservation.checkin
             reserv_checkout = reservation.checkout
@@ -259,7 +252,7 @@ class HotelReservation(models.Model):
                             "state": "assigned",
                             "reservation_id": reservation.id,
                         }
-                        room.write({"isroom": False, "status": "booking"})
+                        room.write({"status": "booking"})
                     reservation_line_obj.create(vals)
         return True
 
@@ -280,12 +273,11 @@ class HotelReservation(models.Model):
         room_reservation_line.unlink()
         reservation_lines = hotel_res_line_obj.search([("line_id", "in", self.ids)])
         for reservation_line in reservation_lines:
-            reservation_line.reserve.write({"isroom": True, "status": "open"})
+            reservation_line.reserve.write({"status": "open"})
         return True
 
     def set_to_draft_reservation(self):
         self.update({"state": "draft"})
-
 
     def create_folio(self):
         """
@@ -294,49 +286,54 @@ class HotelReservation(models.Model):
         @param self: The object pointer
         @return: new record set for hotel folio.
         """
-        hotel_folio_obj = self.env["hotel1.folio"]
-        for reservation in self:
-            folio_lines = []
-            checkin_date = reservation["checkin"]
-            checkout_date = reservation["checkout"]
-            duration_vals = self._onchange_check_dates(
-                checkin_date=checkin_date,
-                checkout_date=checkout_date,
-                duration=False,
-            )
-            duration = duration_vals.get("duration") or 0.0
-            folio_vals = {
-                "date_order": reservation.date_order,
-                "partner_id": reservation.customer_id.partner_id.id,
-                "pricelist_id": reservation.pricelist_id.id,
-                "partner_invoice_id": reservation.partner_invoice_id.id,
-                "checkin_date": reservation.checkin,
-                "checkout_date": reservation.checkout,
-                "duration": duration,
-                "reservation_id": reservation.id,
-            }
-            for line in reservation.reservation_line:
-                for r in line.reserve:
-                    folio_lines.append(
-                        (
-                            0,
-                            0,
-                            {
-                                "checkin_date": checkin_date,
-                                "checkout_date": checkout_date,
-                                "product_id": r.product_id and r.product_id.id,
-                                "name": reservation["reservation_no"],
-                                "price_unit": r.list_price,
-                                "product_uom_qty": duration,
-                                "is_reserved": True,
-                            },
-                        )
-                    )
-                    r.write({"status": "booking"})
-            folio_vals.update({"room_line_ids": folio_lines})
-            folio = hotel_folio_obj.create(folio_vals)
 
-            self.write({"folio_id": [(6, 0, folio.ids)], "state": "done"})
+        for reservation in self:
+            for line in reservation.reservation_line:
+                hotel_folio_obj = self.env["hotel1.folio"]
+                for r in line.reserve:
+                    checkin_date = reservation["checkin"]
+                    checkout_date = reservation["checkout"]
+                    duration_vals = self._onchange_check_dates(
+                        checkin_date=checkin_date,
+                        checkout_date=checkout_date,
+                        duration=False,
+                    )
+                    duration = duration_vals.get("duration") or 0.0
+                    folio_vals = {
+                        "customer_id": reservation.customer_id.id,
+                        "checkin_date": reservation.checkin,
+                        "checkout_date": reservation.checkout,
+                        "duration": duration,
+                        "reservation_id": reservation.id,
+                        "room_id": r.id and r.id,
+                        "name": reservation["reservation_no"],
+                        'hotel_policy': "manual"
+                    }
+                    print(hotel_folio_obj)
+                    r.write({"status": "booking"})
+                    folio = hotel_folio_obj.create(folio_vals)
+                    self.write({"folio_id": [(6, 0, folio.ids)], "state": "done"})
+            # for line in reservation.reservation_line:
+            #     for r in line.reserve:
+            #         folio_lines.append(
+            #             (
+            #                 0,
+            #                 0,
+            #                 {
+            #                     "checkin_date": checkin_date,
+            #                     "checkout_date": checkout_date,
+            #                     "product_id": r.product_id and r.product_id.id,
+            #                     "name": reservation["reservation_no"],
+            #                     "duration": duration,
+            #                     "is_reserved": True,
+            #                 },
+            #             )
+            #         )
+            #         r.write({"status": "booking"})
+            # folio_vals.update({"room_line_ids": folio_lines})
+            # folio = hotel_folio_obj.create(folio_vals)
+            #
+            # self.write({"folio_id": [(6, 0, folio.ids)], "state": "done"})
         return True
 
     def _onchange_check_dates(
@@ -399,7 +396,7 @@ class HotelReservationLine(models.Model):
         -----------------------------------------------------------
         @param self: object pointer
         """
-        if not self.line_id.checkin and self.line_id.state !="draft":
+        if not self.line_id.checkin and self.line_id.state != "draft":
             raise ValidationError(
                 _(
                     """Before choosing a room,\n You have to """
@@ -466,7 +463,7 @@ class HotelReservationLine(models.Model):
                     ]
                 )
                 if myobj:
-                    rec.write({"isroom": True, "status": "open"})
+                    rec.write({"status": "open"})
                     myobj.unlink()
         return super(HotelReservationLine, self).unlink()
 

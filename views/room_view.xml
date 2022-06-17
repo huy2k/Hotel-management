@@ -8,7 +8,7 @@
           <group>
             <field name="name"/>
             <field name="room_type"/>
-             <field name="list_price"/>
+             <field name="price"/>
             <field name="capacity"/>
             <field name="status"/>
           </group>
@@ -21,7 +21,9 @@
     <field name="name">hotel1.room.tree</field>
     <field name="model">hotel1.room</field>
     <field name="arch" type="xml">
-      <tree>
+      <tree decoration-success="status == 'open'"
+             decoration-info="status == 'booking'" decoration-danger="status == 'close'"
+             decoration-warning="status == 'reservation'">
         <field name="name" optional="True"/>
         <field name="room_type"/>
         <field name="status"/>

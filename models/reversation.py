@@ -8,7 +8,7 @@ from datetime import timedelta
 
 class Folio(models.Model):
     _name = "hotel1.folio"
-
+    _order = "checkin_date DESC"
     name = fields.Char("Name")
 
     customer_id = fields.Many2one('hotel1.customer', string='Customer')
@@ -33,12 +33,13 @@ class Folio(models.Model):
     )
     hotel_policy = fields.Selection(
         [
-            ("prepaid", "On Booking"),
+            ("draft", "Draft"),
             ("manual", "On Check In"),
             ("picking", "On Checkout"),
-            ("done", "Done")
+            ("done", "Done"),
+            ('cancel', "Canceled")
         ],
-        default="prepaid",
+        default="draft",
         help="Hotel policy for payment that "
              "either the guest has to payment at "
              "booking time or check-in "
@@ -128,10 +129,22 @@ class Folio(models.Model):
         self.room_id.status = 'open'
 
     def action_checkin(self):
-        self.hotel_policy = 'manual'
+        if self.room_id:
+            self.hotel_policy = 'manual'
+            self.room_id.status = "booking"
+        else:
+            raise ValidationError(
+                _(
+                    """Please select room  """
+                )
+            )
 
     def action_checkout(self):
         self.hotel_policy = 'picking'
+
+    def action_canceled(self):
+        self.room_id.status = "open"
+        self.hotel_policy = 'cancel'
 
     def write(self, vals):
         if vals and vals.get("duration", False):
@@ -144,17 +157,6 @@ class Folio(models.Model):
             reservations = reservation_line_obj.search(
                 [("reservation_id", "=", folio.reservation_id.id)]
             )
-            # if len(reservations) == 1:
-            #     for line in folio.reservation_id.reservation_line:
-            #         for room in line.reserve:
-            #             vals = {
-            #                 "room_id": room.id,
-            #                 "check_in": folio.checkin_date,
-            #                 "check_out": folio.checkout_date,
-            #                 "state": "assigned",
-            #                 "reservation_id": folio.reservation_id.id,
-            #             }
-            #             reservations.write(vals)
         return res
 
     def create_folio_invoice(self):
@@ -188,7 +190,7 @@ class Folio(models.Model):
             invoice_line_vals1 = {
                 'name': folio_req.room_id.name or '',
                 'account_id': invoice_line_account_id,
-                'price_unit': folio_req.room_id.product_id.list_price,
+                'price_unit': folio_req.room_id.room_type.price,
                 'quantity': folio_req.duration,
                 'product_id': folio_req.room_id.product_id.id,
             }
@@ -238,9 +240,12 @@ class Folio(models.Model):
 
     @api.model
     def create(self, vals):
+        vals["name"] = (
+            self.env["ir.sequence"].next_by_code("hotel1.folio") or "New"
+        )
         room = vals.get("room_id")
-        print(type(room))
-        room = int(room)
+        # print(type(room))
+        # room = int(room)
         room_obj = self.env["hotel1.room"].search([('id', '=', room)])
 
         if room_obj.status == 'close':
@@ -249,9 +254,9 @@ class Folio(models.Model):
                     """Room close """
                 )
             )
-        room_obj.write({
-            'status': 'booking'
-        })
+        # room_obj.write({
+        #     'status': 'booking'
+        # })
 
         # vals['price_room'] = room_obj.list_price * vals.get('duration')
         result = super(Folio, self).create(vals)
@@ -265,14 +270,6 @@ class Folio(models.Model):
         -----------------------------------------------------------
         @param self: object pointer
         """
-        # if not self.checkin_date and self.hotel_policy != "manual":
-        #     raise ValidationError(
-        #         _(
-        #             """Before choosing a room,\n You have to """
-        #             """select a Check in date or a Check out """
-        #             """ date in the book form."""
-        #         )
-        #     )
         hotel_room_ids = self.env["hotel1.room"].search(
             [("room_type.id", "=", self.room_type_id.id)]
         )

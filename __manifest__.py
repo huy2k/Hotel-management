@@ -24,6 +24,8 @@
         'security/ir.model.access.csv',
         'data/hotel_customer_sequence.xml',
         'data/hotel_sequence.xml',
+        'data/hotel_reservation_sequence.xml',
+        'data/hotel_folio_sequence.xml',
         'views/data.xml',
         'views/room_view.xml',
         'views/service_views.xml',

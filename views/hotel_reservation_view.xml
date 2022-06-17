@@ -73,10 +73,6 @@
 
 
                             <newline />
-<!--                            <field-->
-<!--                                name="partner_invoice_id"-->
-<!--                                domain="[('parent_id','=',customer_id.partner_id)]"-->
-<!--                            />-->
 
                         </group>
                         <group colspan="4" col="4">

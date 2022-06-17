@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from odoo.exceptions import ValidationError
 
 
 class Room(models.Model):
@@ -14,13 +15,34 @@ class Room(models.Model):
     status = fields.Selection([
         ('open', 'Open'),
         ('close', 'Close'),
-        ('booking', 'Booking')
+        ('booking', 'Booking'),
+        ('reservation', "Reservation")
     ], default="open")
     # booking_id = fields.Many2one("hotel1.booking")
     capacity = fields.Integer(string="Capacity")
     room_reservation_line_ids = fields.One2many(
         "hotel1.room.reservation.line", "room_id", string="Room Reserve Line"
     )
+    price = fields.Monetary(string="Price", compute='_compute_price', readonly=True, store=True)
+    currency_id = fields.Many2one(
+        'res.currency', string='Currency',
+        readonly=True,
+        store=True
+    )
+
+    @api.depends('room_type.price')
+    def _compute_price(self):
+        for room in self:
+            room.price = room.room_type.price
+
+    def unlink(self):
+        if self.status == "booking":
+            raise ValidationError(
+                (
+                    """Room booking """
+                    """You can't delete room."""
+                )
+            )
 
 
 class RoomType(models.Model):

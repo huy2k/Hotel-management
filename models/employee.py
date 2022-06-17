@@ -37,8 +37,7 @@ class HotelEmployee(models.Model):
                     'hospital_id': em_id.company_id.id}
         user_rec = user_obj.with_context(ctx_vals).create(user_vals)
         em_id.employee_id.write({'user_id': user_rec.id})
-        #        if vals.get('is_parent'):
-        #            self.parent_crt(teacher_id)
+
         return em_id
 
     @api.onchange('user_id')

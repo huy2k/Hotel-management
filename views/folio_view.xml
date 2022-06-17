@@ -18,7 +18,7 @@
 
             string="Checkin"
             type="object"
-            class="oe_highlight" attrs="{'invisible': [('hotel_policy', '!=', 'prepaid')]}"
+            class="oe_highlight" attrs="{'invisible': [('hotel_policy', '!=', 'draft')]}"
           />
           <button
             name="action_checkout"
@@ -79,7 +79,7 @@
                   name="room_type_id"
                   colspan="4"
                   string="Room Line"
-                  attrs="{'readonly': ['|', ('hotel_policy', '!=', 'prepaid'),('hotel_policy', '!=', 'manual')]}"
+                  attrs="{'readonly': [('hotel_policy', '!=', 'draft'),('hotel_policy', '!=', 'manual')]}"
                 />
                 <field name="room_id"/>
                 <field name="price_room" readonly="True"/>
@@ -92,7 +92,7 @@
                 colspan="4"
                 string="Service Line"
                 nolabel="1"
-                attrs="{'readonly': [('hotel_policy', '!=', 'prepaid'),('hotel_policy', '!=', 'manual')]}"
+                attrs="{'readonly': [('hotel_policy', '!=', 'draft'),('hotel_policy', '!=', 'manual')]}"
               >
 
                 <tree editable="bottom">
@@ -122,7 +122,7 @@
         <field name="checkout_date"/>
         <field name="name"/>
         <field name="customer_id"/>
-        <field name="create_date"/>
+        <field name="room_id"/>
         <field name="hotel_policy"/>
         <!--        <field name="amount_total" sum="Total amount"/>-->
       </tree>
@@ -215,12 +215,13 @@
                 <div>
                   <strong>
                     <field name="name"/>
+                    <field name="customer_id"/>
                   </strong>
                 </div>
 
                 <div class="text-muted">
                   <a>Amount :</a>
-                  <!--                  <field name="amount_total" widget="monetary"/>-->
+<!--                  <field name="amount_total" widget="monetary"/>-->
                 </div>
               </div>
               <div class="oe_clear"/>
@@ -234,7 +235,7 @@
   <record id="hotel1_folio_action" model="ir.actions.act_window">
     <field name="name">folio</field>
     <field name="res_model">hotel1.folio</field>
-    <field name="view_mode">tree,form,kanban</field>
+    <field name="view_mode">tree,form,kanban,calendar</field>
     <field name="help" type="html">
       <p class="o_view_nocontent_smiling_face">
         No data
