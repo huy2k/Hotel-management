@@ -18,7 +18,7 @@
             parent="hotel1_configuration_menu"/>
   <!--   <menuitem id="hotel1_booking_menu" name="Booking"  action="my_hotel.hotel1_booking_action"-->
   <!--            parent="hotel_management_menu"/>-->
-  <menuitem id="hotel1_folio_menu" name="Folio" action="hotel.hotel1_folio_action"
+  <menuitem id="hotel1_folio_menu" name="Folio" action="hotel1_folio_action"
             parent="hotel_management_menu" sequence="4"/>
   <menuitem
     name="Reservations"

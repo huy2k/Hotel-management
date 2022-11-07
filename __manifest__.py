@@ -35,8 +35,17 @@
         'views/employee_view.xml',
         'views/folio_view.xml',
         'views/hotel_reservation_view.xml',
+        'views/web-form.xml',
+        'views/frontend/home.xml',
+        'views/frontend/bookform.xml',
         'views/menu_views.xml',
-
     ],
+    # 'assets': {
+    #     'web.assets_frontend':  [
+    #         '/Hotel-management/static/css/all.css',
+    #         '/Hotel-management/static/css/style.css',
+    #         '/Hotel-management/static/css/odometer.css',
+    #     ],
+    # },
 
 }

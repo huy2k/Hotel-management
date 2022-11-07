@@ -1,9 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import datetime, date
-from odoo.tools import DEFAULT_SERVER_DATETIME_FORMAT
-import time
-from datetime import timedelta
 
 
 class Folio(models.Model):
@@ -22,7 +19,7 @@ class Folio(models.Model):
         "Check Out",
     )
     room_type_id = fields.Many2one('hotel1.room.type', "Room type")
-    room_id = fields.Many2one("hotel1.room", index=True)
+    room_id = fields.Many2one("hotel1.room")
     service_line_ids = fields.One2many(
         "hotel1.service.line",
         "folio_id",
@@ -48,7 +45,7 @@ class Folio(models.Model):
     duration = fields.Float(
         "Duration in Days",
         help="Number of days which will automatically "
-             "count from the check-in and check-out date. ", default=1.0
+             "count from the check-in and check-out date. ", compute="_compute__checkin_checkout_dates"
     )
     # hotel_invoice_id = fields.Many2one("account.move", "Invoice", copy=False)
     additional_hours = fields.Integer(
@@ -91,8 +88,10 @@ class Folio(models.Model):
                     )
                 )
 
-    @api.onchange("checkin_date", "checkout_date", 'duration')
-    def _onchange_checkin_checkout_dates(self):
+    # @api.onchange("checkin_date", "checkout_date", 'duration')
+    @api.depends("checkin_date", "checkout_date", 'duration')
+    # def _onchange_checkin_checkout_dates(self):
+    def _compute__checkin_checkout_dates(self):
         """
         When you change checkin_date or checkout_date it will checked it
         and update the qty of hotel folio line
@@ -314,3 +313,5 @@ class HotelServiceLine(models.Model):
         for i in self:
             total = i.service_line_id.list_price * i.quantity
         self.total = total
+
+

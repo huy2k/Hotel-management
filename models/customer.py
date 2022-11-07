@@ -33,7 +33,6 @@ class HotelCustomer(models.Model):
     country_id = fields.Many2one("res.country", string="Nationality (Country)")
     # diseases_ids = fields.One2many("hospital.diseases", "customer_id", string="Diseases")
 
-
     # Computed ----------
     phone = fields.Char('Phone', compute='_compute_phone', inverse='_inverse_phone', readonly=False,
                         store=True)
@@ -137,3 +136,19 @@ class HotelCustomer(models.Model):
         vals['name'] = self.env['ir.sequence'].next_by_code('hotel1.customer.seq')
         result = super(HotelCustomer, self).create(vals)
         return result
+
+
+class ResPartner(models.Model):
+    _name = 'res.partner'
+    _inherit = 'res.partner'
+    _description = 'Res Partner'
+
+    identification_id = fields.Char(string='Identification No')
+    passport_id = fields.Char('Passport No')
+    info = fields.Text(string="Extra Info")
+
+    @api.model
+    def create(self, vals):
+        res = super(ResPartner, self).create(vals)
+        company_id = res.company_id.id
+        return res

@@ -121,14 +121,15 @@ class HotelReservation(models.Model):
             for rec in reservation.reservation_line:
                 if len(rec.reserve) == 0:
                     raise ValidationError(_("Please Select Rooms For Reservation."))
-                cap = sum(room.capacity for room in rec.reserve)
+                cap += sum(room.capacity for room in rec.reserve)
+
             if not ctx.get("duplicate"):
                 if (reservation.adults + reservation.children) > cap:
                     raise ValidationError(
                         _(
                             "Room Capacity Exceeded \n"
                             " Please Select Rooms According to"
-                            " Members Accomodation."
+                            " Members Accomodation." + str(cap)
                         )
                     )
             if reservation.adults <= 0:
@@ -137,7 +138,7 @@ class HotelReservation(models.Model):
     @api.constrains("checkin", "checkout")
     def check_in_out_dates(self):
         """
-        When date_order is less then check-in date or
+        When date_order is less than check-in date or
         Checkout date should be greater than the check-in date.
         """
         if self.checkout and self.checkin:
@@ -163,7 +164,13 @@ class HotelReservation(models.Model):
         vals["reservation_no"] = (
             self.env["ir.sequence"].next_by_code("hotel1.reservation")
         )
+        print(vals)
         return super(HotelReservation, self).create(vals)
+
+    def write(self, vals):
+        print(vals)
+        res = super(HotelReservation, self).write(vals)
+        return res
 
     def check_overlap(self, date1, date2):
         delta = date2 - date1
@@ -185,10 +192,10 @@ class HotelReservation(models.Model):
                 for room in line_id.reserve:
                     if room.room_reservation_line_ids:
                         for reserv in room.room_reservation_line_ids.search(
-                            [
-                                ("status", "in", ("confirm", "done")),
-                                ("room_id", "=", room.id),
-                            ]
+                                [
+                                    ("status", "in", ("confirm", "done")),
+                                    ("room_id", "=", room.id),
+                                ]
                         ):
                             check_in = reserv.check_in
                             check_out = reserv.check_out
@@ -197,14 +204,14 @@ class HotelReservation(models.Model):
                             if check_in <= reserv_checkout <= check_out:
                                 room_bool = True
                             if (
-                                reserv_checkin <= check_in
-                                and reserv_checkout >= check_out
+                                    reserv_checkin <= check_in
+                                    and reserv_checkout >= check_out
                             ):
                                 room_bool = True
-                            r_checkin = (reservation.checkin).date()
-                            r_checkout = (reservation.checkout).date()
-                            check_intm = (reserv.check_in).date()
-                            check_outtm = (reserv.check_out).date()
+                            r_checkin = reservation.checkin.date()
+                            r_checkout = reservation.checkout.date()
+                            check_intm = reserv.check_in.date()
+                            check_outtm = reserv.check_out.date()
                             range1 = [r_checkin, r_checkout]
                             range2 = [check_intm, check_outtm]
                             overlap_dates = self.check_overlap(
@@ -313,35 +320,15 @@ class HotelReservation(models.Model):
                     r.write({"status": "booking"})
                     folio = hotel_folio_obj.create(folio_vals)
                     self.write({"folio_id": [(6, 0, folio.ids)], "state": "done"})
-            # for line in reservation.reservation_line:
-            #     for r in line.reserve:
-            #         folio_lines.append(
-            #             (
-            #                 0,
-            #                 0,
-            #                 {
-            #                     "checkin_date": checkin_date,
-            #                     "checkout_date": checkout_date,
-            #                     "product_id": r.product_id and r.product_id.id,
-            #                     "name": reservation["reservation_no"],
-            #                     "duration": duration,
-            #                     "is_reserved": True,
-            #                 },
-            #             )
-            #         )
-            #         r.write({"status": "booking"})
-            # folio_vals.update({"room_line_ids": folio_lines})
-            # folio = hotel_folio_obj.create(folio_vals)
-            #
-            # self.write({"folio_id": [(6, 0, folio.ids)], "state": "done"})
+
         return True
 
     def _onchange_check_dates(
-        self, checkin_date=False, checkout_date=False, duration=False
+            self, checkin_date=False, checkout_date=False, duration=False
     ):
         """
         This method gives the duration between check in checkout if
-        customer will leave only for some hour it would be considers
+        customer will leave only for some hour it would be considered
         as a whole day. If customer will checkin checkout for more or equal
         hours, which configured in company as additional hours than it would
         be consider as full days
@@ -407,41 +394,32 @@ class HotelReservationLine(models.Model):
         hotel_room_ids = self.env["hotel1.room"].search(
             [("room_type.id", "=", self.categ_id.id)]
         )
+
         room_ids = []
         for room in hotel_room_ids:
             assigned = False
             for line in room.room_reservation_line_ids.filtered(
-                lambda l: l.status != "cancel"
+                    lambda l: l.status != "cancel"
             ):
                 if self.line_id.checkin and line.check_in and self.line_id.checkout:
                     if (
-                        self.line_id.checkin <= line.check_in <= self.line_id.checkout
+                            self.line_id.checkin <= line.check_in <= self.line_id.checkout
                     ) or (
-                        self.line_id.checkin <= line.check_out <= self.line_id.checkout
+                            self.line_id.checkin <= line.check_out <= self.line_id.checkout
                     ):
                         assigned = True
                     elif (line.check_in <= self.line_id.checkin <= line.check_out) or (
-                        line.check_in <= self.line_id.checkout <= line.check_out
+                            line.check_in <= self.line_id.checkout <= line.check_out
                     ):
                         assigned = True
-            # for rm_line in room.room_line_ids.filtered(lambda l: l.status != "cancel"):
-            #     if self.line_id.checkin and rm_line.check_in and self.line_id.checkout:
-            #         if (
-            #             self.line_id.checkin
-            #             <= rm_line.check_in
-            #             <= self.line_id.checkout
-            #         ) or (
-            #             self.line_id.checkin
-            #             <= rm_line.check_out
-            #             <= self.line_id.checkout
-            #         ):
-            #             assigned = True
-            #         elif (
-            #             rm_line.check_in <= self.line_id.checkin <= rm_line.check_out
-            #         ) or (
-            #             rm_line.check_in <= self.line_id.checkout <= rm_line.check_out
-            #         ):
-            #             assigned = True
+                    hotel_room_folio = self.env["hotel1.folio"].search(
+                        [("room_id.id", "=", room.id), ("checkout_date", ">", self.line_id.checkin)]
+                    )
+                    if len(hotel_room_folio) > 0:
+                        assigned = True
+                    else:
+                        assigned = False
+
             if not assigned:
                 room_ids.append(room.id)
         domain = {"reserve": [("id", "in", room_ids)]}

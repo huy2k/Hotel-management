@@ -136,8 +136,9 @@
       <calendar
         string="folios"
         date_start="checkin_date"
-        color="customer_id"
+        color="hotel_policy"
         date_stop="checkout_date"
+        mode="month"
       >
         <field name="name"/>
         <field name="customer_id"/>

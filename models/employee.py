@@ -16,18 +16,16 @@ class HotelEmployee(models.Model):
                                   delegate=True, required=True,
                                   help='Enter related employee')
     category_id = fields.Many2many('hr.employee.category',
-                                   'Doctor_category_rels', 'emp_id',
-                                   'categ_id', 'Tags',
+                                   # 'categ_id', 'Tags',
                                    help='Select employee category')
 
     info = fields.Text('Extra Info')
-
 
     #
     @api.model
     def create(self, vals):
         """Inherited create method to assign value to users for delegation"""
-        em_id = super( HotelEmployee, self).create(vals)
+        em_id = super(HotelEmployee, self).create(vals)
         user_obj = self.env['res.users']
         user_vals = {'name': em_id.name,
                      'login': em_id.work_email,
