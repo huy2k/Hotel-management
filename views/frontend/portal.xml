@@ -1,0 +1,63 @@
+<odoo>
+    <data>
+
+        <template id="portal_my_home_reservation" name="Portal My Home:Reservation" inherit_id="portal.portal_my_home"
+                  customize_show="True" priority="99">
+            <xpath expr="//div[hasclass('o_portal_docs')]" position="inside">
+                <t  t-call="portal.portal_docs_entry">
+                    <t t-set="title">Reservation</t>
+                    <t t-set="url" t-value="'/hotel/folio/'"/>
+                    <t t-set="placeholder_count" t-value="'count_reservation'"/>
+                </t>
+            </xpath>
+        </template>
+
+
+        <template id="portal_hotel_reservation" name="Reservation">
+            <t t-call="portal.portal_layout">
+                <t t-set="breadcrumbs_searchbar" t-value="True"/>
+
+                <t t-call="portal.portal_searchbar">
+                    <t t-set="title">Reservation</t>
+                </t>
+                <t t-if="not reservations">
+                    <p>There are currently no reservations available.</p>
+                </t>
+                <t t-if="reservations" t-call="portal.portal_table">
+                    <thead>
+                        <tr class="active">
+                            <th>No</th>
+                            <th class="text-right">Check In</th>
+                            <th class="text-center">Check Out</th>
+                            <th class="text-right">State</th>
+                        </tr>
+                    </thead>
+                    <t t-foreach="reservations" t-as="reservation">
+                        <tr>
+                            <td><a t-attf-href=""><t t-esc="reservation.reservation_no"/></a></td>
+                            <td class="text-right"><span t-field="reservation.checkin"/></td>
+                            <td class="text-right"><span t-field="reservation.checkout"/></td>
+                            <td class="text-right">
+                                <span class="badge badge-pill badge-secondary"><span
+                                        t-field="reservation.state"/></span>
+                            </td>
+                        </tr>
+                    </t>
+                </t>
+            </t>
+        </template>
+        <!--        <template id="portal_my_home_menu_reservation" name="Portal layout : Reservation menu entries"-->
+        <!--                  inherit_id="portal.portal_breadcrumbs" priority="20">-->
+        <!--            <xpath expr="//ol[hasclass('o_portal_submenu')]" position="inside">-->
+        <!--                <li t-if="page_name == 'reservation'" t-attf-class="breadcrumb-item #{'active ' if not course else ''}">-->
+        <!--                    <a t-if="course" t-attf-href="/hotel/folio?{{ keep_query() }}">Reservation</a>-->
+        <!--                    <t t-else="">Reservation</t>-->
+        <!--                </li>-->
+        <!--                <li t-if="course" class="breadcrumb-item active">-->
+        <!--                    <t t-esc="course.name"/>-->
+        <!--                </li>-->
+        <!--            </xpath>-->
+        <!--        </template>-->
+
+    </data>
+</odoo>

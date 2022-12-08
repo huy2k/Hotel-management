@@ -11,6 +11,7 @@ class Service(models.Model):
         ondelete="cascade",
     )
     service_type = fields.Many2one("hotel1.service_type")
+    service_quantity = fields.Integer("Quantity")
     # price = fields.Monetary("Price", 'currency_id')
     # currency_id = fields.Many2one(
     #     'res.currency', string='Currency', required=True,

@@ -13,6 +13,11 @@
                         <field name="price"/>
                         <field name="currency_id"/>
                     </group>
+                    <notebook name="Amentities">
+                        <page>
+                            <field name="room_amenities_ids"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

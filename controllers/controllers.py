@@ -1,22 +1,33 @@
 # -*- coding: utf-8 -*-
 
-
-from odoo import http
-from datetime import datetime
+from odoo import http, _
+from datetime import datetime, timedelta
 from dateutil import parser
+from odoo.addons.portal.controllers.portal import CustomerPortal
 
 
 class Hotel(http.Controller):
 
-    @http.route('/index', auth='public', website=True)
+    @http.route('/index', type='http', auth='public', website=True)
     def index1(self, **kw):
-        return http.request.render('Hotel-management.index1')
+        room_types = http.request.env['hotel1.room.type'].sudo().search([])
+        return http.request.render('Hotel-management.index2', {
+            'room_types': room_types
+        })
+
+    @http.route('/room-types/<model("hotel1.room.type"):room_type>', auth='public', website=True)
+    def room_type_website(self, room_type):
+        rooms = http.request.env['hotel1.room'].search(['&', ('room_type', '=', room_type.id), ('status', '=', 'open')])
+        room_ids = []
+        return http.request.render('Hotel-management.room_type_website', {
+            'room_type': room_type, 'rooms': rooms
+        })
 
     @http.route('/room-type', auth='public', website=True)
     def index(self, **kw):
-        room_types = http.request.env['hotel1.room.type']
+        room_types = http.request.env['hotel1.room.type'].sudo().search([])
         return http.request.render('Hotel-management.index', {
-            'room_types': room_types.search([])
+            'room_types': room_types
         })
 
     @http.route('/room-type/<model("hotel1.room.type"):room_type>', auth="public",
@@ -37,24 +48,132 @@ class Hotel(http.Controller):
     @http.route('/create/booking', auth="public", website=True)
     def create_webbooking(self, **kwargs):
         partner = http.request.env['res.users'].browse(http.request.env.uid).partner_id
-        customer = http.request.env['hotel1.customer'].search([('partner_id', '=', partner.id)])
         print(kwargs)
         checkin = parser.parse(kwargs.get('Checkin'))
-        # checkin =datetime.strptime(checkin, "%Y/%m/%d %H:%M:%S").strftime("%d-%m-%Y %H:%M:%S")
         checkout = parser.parse(kwargs.get('checkout'))
         room = int(kwargs.get('Room'))
         # checkout = datetime.strptime(checkout, "%Y/%m/%d %H:%M:%S").strftime("%d-%m-%Y %H:%M:%S")
         print(partner)
-        print(customer)
-        reverse_vals = {'customer_id': customer.id,
+
+        reverse_vals = {'customer_name': kwargs.get('name'),
+                        'customer_id': partner.id,
                         'checkin': checkin,
                         'checkout': checkout,
                         'adults': kwargs.get('adults'),
                         'children': kwargs.get('children'),
                         'reservation_line': [
                             [0, 'virtual_24',
-                             {'name': False, 'categ_id': kwargs.get('Room_type'), 'reserve': [[room, False, [room]]]}]],
-                        # 'reservation_no': 'Re/00006'
+                             {'name': False, 'categ_id': kwargs.get('Room_type'), 'reserve': [[6, False, [room]]]}]],
                         }
+        room_state_vals = {
+            'status': 'reservation'
+        }
         http.request.env['hotel1.reservation'].sudo().create(reverse_vals)
+        http.request.env['hotel1.room'].sudo().search([('id', '=', room)]).write(room_state_vals)
         return http.request.render('Hotel-management.thank_you_booking')
+
+    @http.route('/searchs', auth="public", website=True)
+    def search_rooms(self, **kwargs):
+        return http.request.render('Hotel-management.search_room')
+
+    @http.route('/search/room', auth="public", website=True)
+    def search_room(self, **kwargs):
+        print(kwargs)
+        if not kwargs:
+            checkin = datetime.today()
+            checkout = datetime.today() + timedelta(days=1)
+        else:
+            checkin = parser.parse(kwargs.get('checkin'))
+            checkout = parser.parse(kwargs.get('checkout'))
+        # get room open
+        rooms = http.request.env['hotel1.room'].search([('status', '=', 'open')])
+        print("so phong trong", rooms)
+
+        reservation_obj = http.request.env["hotel1.reservation"].search([])
+        print(reservation_obj)
+        for reservation in reservation_obj:
+
+            reserv_checkin = checkin
+            reserv_checkout = checkout
+            room_bool = False
+
+            for line_id in reservation.reservation_line:
+                for room in line_id.reserve:
+                    if room.room_reservation_line_ids:
+                        for reserv in room.room_reservation_line_ids.search(
+                                [
+                                    ("status", "in", ("confirm", "done")),
+                                    ("room_id", "=", room.id),
+                                ]
+                        ):
+                            check_in = reserv.check_in
+                            check_out = reserv.check_out
+
+                            if check_in <= reserv_checkin <= check_out:
+                                room_bool = True
+                            if check_in <= reserv_checkout <= check_out:
+                                room_bool = True
+                            if (
+                                    reserv_checkin <= check_in
+                                    and reserv_checkout >= check_out
+                            ):
+                                room_bool = True
+                            # print(room.id)
+                            print(room.name)
+                            print(room_bool)
+                        if not room_bool:
+                            room_open = http.request.env["hotel1.room"].search([('id', '=', room.id)])
+                            rooms += room_open
+
+        print("so phong trong sau check ngay", set(rooms))
+        rooms = set(rooms)
+
+        return http.request.render('Hotel-management.search_room', {
+            'check_in': checkin, 'check_out': checkout, 'rooms': rooms
+        })
+
+    @http.route('/room/<model("hotel1.room"):room>', auth='public', website=True)
+    def roomtype_website(self, room):
+
+        return http.request.render('Hotel-management.view_detail_room', {
+             'room': room
+        })
+
+    @http.route('/hotel/folio/', auth='public', website=True)
+    def display_subjects(self, sortby=None, **kw):
+        partner = http.request.env.user.partner_id
+        reservation = http.request.env['hotel1.reservation'].search([('customer_id', '=', partner.id)])
+        return http.request.render('Hotel-management.portal_hotel_reservation', {
+            'reservations': reservation,
+            'page_name': 'reservation',
+            # 'searchbar_sortings': searchbar_sortings,
+            'sortby': sortby
+        })
+
+    # @http.route('/academy/<model("openacademy.course"):course>/', auth='public', website=True)
+    # def display_course_detail(self, course):
+    #     return http.request.render('openacademy.course_detail', {'course': course, 'page_name': 'course'})
+
+
+class HotelCustomerPortal(CustomerPortal):
+    def _prepare_home_portal_values(self, counters):
+        values = super()._prepare_home_portal_values(counters)
+
+        Reservations = http.request.env['hotel1.reservation']
+        partner = http.request.env.user.partner_id
+        # if 'quotation_count' in counters:
+        #     values['quotation_count'] = SaleOrder.search_count(self._prepare_quotations_domain(partner)) \
+        #         if SaleOrder.check_access_rights('read', raise_exception=False) else 0
+
+        if 'count_reservation' in counters:
+            values['count_reservation'] = Reservations.search_count([('customer_id', '=', partner.id)])
+            # values['count_reservation'] = Reservations.search_count(self._prepare_reservation_domain(partner))\
+            #  if Reservations.check_access_rights('read', raise_exception=False) else 0
+
+        print(values)
+        return values
+
+    def _prepare_reservation_domain(self, partner):
+        return [
+            ('customer_id', 'child_of', [partner.commercial_partner_id.id]),
+        ]

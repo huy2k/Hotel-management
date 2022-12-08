@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+<!--        <record id="module_hotel_management" model="ir.module.category">-->
+<!--            <field name="description">Helps you manage your hotel.</field>-->
+<!--        </record>-->
+         <record id="group_manager_hotel" model="res.groups">
+            <field name="name">Hotel / Manager</field>
+        </record>
+
+        <record id="group_receptionist" model="res.groups">
+            <field name="name">Hotel / Receptionist </field>
+        </record>
+
+        <record id="group_room" model="res.groups">
+            <field name="name">Hotel / Room</field>
+        </record>
+    </data>
+</odoo>

@@ -17,11 +17,12 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website_sale', 'account', 'hr'],
+    'depends': ['website_sale', 'account', 'hr', 'portal', 'base'],
 
     # always loaded
     'data': [
         'security/ir.model.access.csv',
+        'security/security.xml',
         'data/hotel_customer_sequence.xml',
         'data/hotel_sequence.xml',
         'data/hotel_reservation_sequence.xml',
@@ -30,6 +31,7 @@
         'views/room_view.xml',
         'views/service_views.xml',
         'views/roomtype_views.xml',
+        'views/hotel_room_amenities.xml',
         'views/service_type_views.xml',
         'views/customer_view.xml',
         'views/employee_view.xml',
@@ -38,6 +40,9 @@
         'views/web-form.xml',
         'views/frontend/home.xml',
         'views/frontend/bookform.xml',
+        'views/frontend/roomtype_website.xml',
+        'views/frontend/search_booking.xml',
+        'views/frontend/portal.xml',
         'views/menu_views.xml',
     ],
     # 'assets': {

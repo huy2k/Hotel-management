@@ -1,6 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from datetime import datetime, date
+from datetime import date
 
 
 class Folio(models.Model):
@@ -8,7 +8,7 @@ class Folio(models.Model):
     _order = "checkin_date DESC"
     name = fields.Char("Name")
 
-    customer_id = fields.Many2one('hotel1.customer', string='Customer')
+    customer_id = fields.Many2one('res.partner', string='Customer')
 
     checkin_date = fields.Datetime(
         "Check In",
@@ -93,29 +93,27 @@ class Folio(models.Model):
     # def _onchange_checkin_checkout_dates(self):
     def _compute__checkin_checkout_dates(self):
         """
-        When you change checkin_date or checkout_date it will checked it
+        When you change checkin_date or checkout_date it will check it
         and update the qty of hotel folio line
         -----------------------------------------------------------------
         @param self: object pointer
         """
-
-        configured_addition_hours = (
-            self.additional_hours
-        )
-        myduration = 0
-        if self.checkin_date and self.checkout_date:
-            dur = self.checkout_date - self.checkin_date
-            sec_dur = dur.seconds
-            if (not dur.days and not sec_dur) or (dur.days and not sec_dur):
-                myduration = dur.days
-            else:
-                myduration = dur.days + 1
-            #            To calculate additional hours in hotel room as per minutes
-            if configured_addition_hours > 0:
-                additional_hours = abs((dur.seconds / 60) / 60)
-                if additional_hours >= configured_addition_hours:
-                    myduration += 1
-        self.duration = myduration
+        for record in self:
+            configured_addition_hours = record.additional_hours
+            myduration = 0
+            if record.checkin_date and record.checkout_date:
+                dur = record.checkout_date - record.checkin_date
+                sec_dur = dur.seconds
+                if (not dur.days and not sec_dur) or (dur.days and not sec_dur):
+                    myduration = dur.days
+                else:
+                    myduration = dur.days + 1
+                #            To calculate additional hours in hotel room as per minutes
+                if configured_addition_hours > 0:
+                    additional_hours = abs((dur.seconds / 60) / 60)
+                    if additional_hours >= configured_addition_hours:
+                        myduration += 1
+            record.duration = myduration
 
     @api.depends('duration', 'room_id')
     def computer_price_room(self):
@@ -174,13 +172,13 @@ class Folio(models.Model):
                 'move_type': 'out_invoice',
                 'ref': False,
                 'journal_id': sale_journals and sale_journals[0].id or False,
-                'partner_id': folio_req.customer_id.partner_id.id,
-                'currency_id': folio_req.customer_id.partner_id.currency_id.id,
+                'partner_id': folio_req.customer_id.id,
+                'currency_id': folio_req.customer_id.currency_id.id,
                 'invoice_payment_term_id': False,
-                'fiscal_position_id': folio_req.customer_id.partner_id.property_account_position_id.id,
+                'fiscal_position_id': folio_req.customer_id.property_account_position_id.id,
                 'team_id': False,
                 'invoice_date': date.today(),
-                'company_id': folio_req.customer_id.partner_id.company_id.id or False,
+                'company_id': folio_req.customer_id.company_id.id or False,
             }
             res = account_invoice_obj.create(invoice_vals)
             product = folio_req.service_line_ids.service_line_id

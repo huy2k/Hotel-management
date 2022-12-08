@@ -1,7 +1,6 @@
 # See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
-
 from odoo import _, api, fields, models
 from odoo.exceptions import ValidationError
 
@@ -25,9 +24,9 @@ class HotelReservation(models.Model):
         index=True,
         default=lambda self: fields.Datetime.now(),
     )
-
+    customer_name = fields.Char("Name")
     customer_id = fields.Many2one(
-        "hotel1.customer",
+        "res.partner",
         "Guest Name",
         index=True,
         required=True
@@ -116,13 +115,18 @@ class HotelReservation(models.Model):
         @return: raise a warning depending on the validation
         """
         ctx = dict(self._context) or {}
+        if self.adults < 0  or  self.children < 0:
+            raise ValidationError(_("Please not enter number negative."))
         for reservation in self:
             cap = 0
             for rec in reservation.reservation_line:
-                if len(rec.reserve) == 0:
-                    raise ValidationError(_("Please Select Rooms For Reservation."))
+                print("rec", rec)
+                for room in rec.reserve:
+                    print(room.capacity)
+                     # if len(rec.reserve) == 0:
+                #     raise ValidationError(_("Please Select Rooms For Reservation."))
                 cap += sum(room.capacity for room in rec.reserve)
-
+                print("suc chua: ", cap)
             if not ctx.get("duplicate"):
                 if (reservation.adults + reservation.children) > cap:
                     raise ValidationError(
@@ -164,7 +168,6 @@ class HotelReservation(models.Model):
         vals["reservation_no"] = (
             self.env["ir.sequence"].next_by_code("hotel1.reservation")
         )
-        print(vals)
         return super(HotelReservation, self).create(vals)
 
     def write(self, vals):

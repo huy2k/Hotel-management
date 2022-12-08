@@ -1,6 +1,6 @@
 <odoo>
     <data>
-        <template id="index1">
+        <template id="index2">
             <xpath expr="." position="inside">
                 <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
 
@@ -271,84 +271,100 @@
                     <div class="container">
                         <div class="row">
                             <div class="col-xl-10">
-                                <div class="multi-main-searchber">
-                                    <div class="row align-items-center">
-                                        <div class="col-lg-9">
-                                            <div class="row gx-2 gy-4">
-                                                <div class="col-lg-3 col-md-6">
-                                                    <!--                                                    <div class="searchbox-input date-picker-input">-->
-                                                    <!--                                                        <input autocomplete="off" placeholder="Check In" type="text"-->
-                                                    <!--                                                               name="checkIn" id="datepicker8" value=""-->
-                                                    <!--                                                               class="claender hasDatepicker"/>-->
-                                                    <!--                                                    </div>-->
-                                                    <div class="searchbox-input date-picker-input"
-                                                         id="datetimepicker7231326577577901"
-                                                         data-target-input="nearest">
-                                                        <input type="text"
-                                                               class="claender hasDatepicker datetimepicker-input s_website_form_input"
-                                                               data-target="#datetimepicker7231326577577901"
-                                                               name="Custom Text" placeholder="" id="o2tloqhrci6y"
-                                                               data-fill-with="undefined"/>
-                                                        <div class="input-group-append"
-                                                             data-target="#datetimepicker7231326577577901"
-                                                             data-toggle="datetimepicker">
-                                                            <div class="input-group-text">
-                                                                <img src="theme_hotel/static/src/fonts/date.svg"></img>
+                                <form role="form" action="/search/room" method="POST">
+                                    <div class="multi-main-searchber">
+                                        <div class="row align-items-center">
+                                            <div class="col-lg-9">
+                                                <div class="row gx-2 gy-4">
+                                                    <input type="hidden" name="csrf_token"
+                                                           t-att-value="request.csrf_token()"/>
+                                                    <div class="col-lg-3 col-md-6">
+                                                        <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                                             id="datetimepicker6472102418748"
+                                                             data-target-input="nearest">
+                                                            <input type="text"
+                                                                   class="form-control datetimepicker-input s_website_form_input"
+                                                                   name="checkin" placeholder="" id="checkin"
+                                                                   data-target="#datetimepicker6472102418748"
+                                                                   data-fill-with="undefined"/>
+                                                            <div class="input-group-append" data-toggle="datetimepicker"
+                                                                 data-target="#datetimepicker6472102418748">
+                                                                <div class="input-group-text">
+                                                                    <!--                                                                <i class="fa fa-calendar"></i>-->
+                                                                    <img src="theme_hotel/static/src/fonts/date.svg"></img>
+                                                                </div>
                                                             </div>
+
+                                                        </div>
+                                                    </div>
+                                                    <!--                                            -->
+                                                    <div class="col-lg-3 col-md-6">
+                                                        <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                                             id="datetimepicker6472102418749"
+                                                             data-target-input="nearest">
+                                                            <input type="text"
+                                                                   class="form-control datetimepicker-input s_website_form_input"
+                                                                   name="checkout" placeholder="" id="checkout"
+                                                                   data-target="#datetimepicker6472102418749"
+                                                                   data-fill-with="undefined"/>
+                                                            <div class="input-group-append" data-toggle="datetimepicker"
+                                                                 data-target="#datetimepicker6472102418749">
+                                                                <div class="input-group-text">
+                                                                    <!--                                                                <i class="fa fa-calendar"></i>-->
+                                                                    <img src="theme_hotel/static/src/fonts/date.svg"></img>
+                                                                </div>
+                                                            </div>
+
+                                                        </div>
+                                                    </div>
+
+                                                    <div class="col-lg-3 col-md-6">
+                                                        <div class="searchbox-input two three">
+
+                                                            <select class="form-control s_website_form_input"
+                                                                    style="display: none;" name="room_type">
+                                                                <t t-foreach="room_types" t-as="room_type">
+                                                                    <option t-att-value="room_type.id"
+                                                                            t-esc="room_type.name"/>
+                                                                </t>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6">
+                                                        <div class="">
+                                                            <select class="form-control s_website_form_input"
+                                                                    style="display: none;" name="person">
+                                                                <option value="1">1 Person</option>
+                                                                <option value="2">2 Person</option>
+                                                                <option value="3">3 Person</option>
+                                                                <option value="4">4 Person</option>
+                                                            </select>
+
+                                                        </div>
+                                                    </div>
+                                                    <div class="col-lg-3 col-md-6">
+                                                        <div class="searchbox-input two three">
+                                                            <select class="form-control s_website_form_input"
+                                                                    style="display: none;" name="rooms">
+                                                                <option value="1">1 Room</option>
+                                                                <option value="2">2 Room</option>
+                                                                <option value="3">3 Room</option>
+                                                                <option value="4">4 Room</option>
+                                                                <option value="5">5 Room</option>
+                                                            </select>
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="col-lg-3 col-md-6">
-                                                    <div class="searchbox-input date-picker-input">
-                                                        <input autocomplete="off" placeholder="Check Out" type="text"
-                                                               name="checkIn" id="datepicker9" value=""
-                                                               class="claender hasDatepicker"/>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-6">
-                                                    <div class="searchbox-input two">
-                                                        <select class="person-select" style="display: none;">
-                                                            <option value="location">1 Person</option>
-                                                            <option value="2">2 Person</option>
-                                                            <option value="3">3 Person</option>
-                                                            <option value="4">4 Person</option>
-                                                        </select><div class="nice-select person-select"
-                                                                      tabindex="0"><span class="current">1
-                                                        Person</span><ul class="list"><li data-value="location"
-                                                                                          class="option selected">1
-                                                        Person</li><li data-value="2" class="option">2 Person</li><li
-                                                            data-value="3" class="option">3 Person</li><li
-                                                            data-value="4" class="option">4 Person</li></ul></div>
-                                                    </div>
-                                                </div>
-                                                <div class="col-lg-3 col-md-6">
-                                                    <div class="searchbox-input two three">
-                                                        <select class="person-select" style="display: none;">
-                                                            <option value="location">1 Room</option>
-                                                            <option value="1">2 Room</option>
-                                                            <option value="2">3 Room</option>
-                                                            <option value="3">4 Room</option>
-                                                            <option value="4">5 Room</option>
-                                                        </select><div class="nice-select person-select"
-                                                                      tabindex="0"><span class="current">1
-                                                        Room</span><ul class="list"><li data-value="location"
-                                                                                        class="option selected">1
-                                                        Room</li><li data-value="1" class="option">2 Room</li><li
-                                                            data-value="2" class="option">3 Room</li><li data-value="3"
-                                                                                                         class="option">
-                                                        4 Room</li><li data-value="4" class="option">5
-                                                        Room</li></ul></div>
-                                                    </div>
-                                                </div>
                                             </div>
-                                        </div>
-                                        <div class="col-lg-3 px-0">
-                                            <div class="main-form-submit">
-                                                <a class="btn--primary4 eg-btn" href="room-suits1.html">Check Now</a>
+                                            <div class="col-lg-3 px-0">
+                                                <div class="main-form-submit">
+                                                    <button type="submit" class="btn--primary4 eg-btn">Check
+                                                        Now</button>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                </form>
                             </div>
                         </div>
                     </div>

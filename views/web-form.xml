@@ -731,7 +731,7 @@
                 <t t-set="title">Room</t>
                 <div class="oe_structure">
                 </div>
-                <div class="home4-rooms  mb-120">
+                <div class="home4-rooms mt-20  mb-120">
                     <div class="container-fluid">
                         <div class="row mb-50">
                             <div class="col-lg-12">
@@ -752,7 +752,7 @@
                                             <div class="room-content">
 
                                                 <h3>
-                                                    <a t-att-href="'/room-type/%s' %  slug(room_type)"><t t-esc="room_type.name"></t></a>
+                                                    <a t-att-href="'/room-types/%s' %  slug(room_type)"><t t-esc="room_type.name"></t></a>
                                                 </h3>
                                                 <div class="bed-and-person d-flex align-items-center">
                                                     <div class="bed-qty">
@@ -770,7 +770,7 @@
                                                     </div>
                                                 </div>
                                                 <a class="btn--primary5"
-                                                   t-att-href="'/room-type/%s' %  slug(room_type)">Book Now</a>
+                                                   t-att-href="'/room-types/%s' %  slug(room_type)">Book Now</a>
                                             </div>
                                             <div class="room-features">
                                                 <ul>

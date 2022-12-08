@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="confirm_booking">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap.min.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/boxicons.min.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap-icons.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery-ui.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery.fancybox.min.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/swiper-bundle.min.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick-theme.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/nice-select.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/magnific-popup.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/odometer.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
+            </xpath>
+            <t t-call="website.layout">
+                <t t-set="title">Home</t>
+                <div class="oe_structure"></div>
+                <card>
+
+                </card>
+                 <div class="oe_structure"></div>
+            </t>
+        </template>
+
+    </data>
+</odoo>

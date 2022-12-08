@@ -176,6 +176,9 @@
                             context="{'group_by':'date_order'}"
                     />
                 </group>
+                 <searchpanel>
+                    <field name="state"/>
+                </searchpanel>
             </search>
         </field>
     </record>
@@ -215,6 +218,8 @@
         <field name="res_model">hotel1.reservation</field>
         <field name="view_mode">tree,form,calendar,graph</field>
     </record>
+
+
     <!--    <menuitem-->
     <!--        id="menu_hotel_reservation"-->
     <!--        name="Reservations"-->

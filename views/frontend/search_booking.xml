@@ -1,0 +1,261 @@
+<odoo>
+    <data>
+        <template id="search_room">
+            <xpath expr="." position="inside">
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap.min.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/boxicons.min.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap-icons.css"/>
+
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery-ui.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery.fancybox.min.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/swiper-bundle.min.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick-theme.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/nice-select.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/magnific-popup.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/odometer.css"/>
+                <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
+            </xpath>
+            <t t-call="website.layout">
+                <t t-set="title">Book Room</t>
+                <div class="oe_structure"></div>
+                <div class="room-suits-details-page pt-30 mb-40">
+                    <div class="container mb-30">
+                        <div class="row">
+                            <form role="form" action="/search/room" method="POST">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="col-sm-6">
+                                    <h4>Check in: </h4>
+
+                                    <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                         id="datetimepicker647" data-target-input="nearest">
+                                        <input type="text"
+                                               class="form-control datetimepicker-input s_website_form_input"
+                                               name="checkin" placeholder="" id="checkin"
+                                               data-target="#datetimepicker647"
+                                               data-fill-with="undefined"/>
+                                        <div class="input-group-append" data-toggle="datetimepicker"
+                                             data-target="#datetimepicker647">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-sm-6">
+                                    <h4>Check out: </h4>
+
+                                    <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                         id="datetimepicker6471" data-target-input="nearest">
+                                        <input type="text"
+                                               class="form-control datetimepicker-input s_website_form_input"
+                                               name="checkout" placeholder="" id="checkout"
+                                               data-target="#datetimepicker6471"
+                                               data-fill-with="undefined"/>
+                                        <div class="input-group-append" data-toggle="datetimepicker"
+                                             data-target="#datetimepicker6471">
+                                            <div class="input-group-text">
+                                                <i class="fa fa-calendar"></i>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-sm-12 pt-20" style="text-align:center;">
+                                    <div class="main-form-submit">
+                                        <button type="submit" class="btn--primary4 eg-btn">Check Now</button>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                    <div class="container">
+                        <div class="row mt-10 mb-10">
+                            <h5>Check In:<t t-esc="check_in"/></h5>
+                            <h5>Check Out:<t t-esc="check_out"/></h5>
+                        </div>
+                        <div class="row mb-120 g-5">
+                            <t t-foreach="rooms" t-as="room">
+
+                                <div class="col-lg-4 ">
+                                    <div class="single-room">
+                                        <img class="img-fluid" t-attf-src="data:image/jpg;base64,{{ room.img_room}}"
+                                             alt=""/>
+                                        <div class="background"></div>
+                                        <div class="room-content">
+                                            <div class="price-tag">
+                                                <span><t t-esc="room.price"></t></span> / Per Night
+                                            </div>
+                                            <h3><a href=""><t t-esc="room.name"/></a></h3>
+                                            <div class="bed-and-person d-flex align-items-center">
+                                                <div class="bed-qty">
+                                                    <p><img src="fonts/double-bed.svg" alt=""/> 1 Single Bed</p>
+                                                </div>
+                                                <div class="persons">
+                                                    <p><img src="fonts/persons.svg" alt=""/><t t-esc="room.capacity"/>
+                                                        Guest</p>
+                                                </div>
+                                            </div>
+                                            <div class="book-btn">
+                                                <a class="btn--primary2" t-att-href="'/room/%s' %  slug(room)">Book Now</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </t>
+
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"></div>
+            </t>
+        </template>
+
+
+        <!-- view room -->
+        <template id="view_detail_room">
+            <t t-call="website.layout">
+                <t t-set="title">View Detail room </t>
+                <div class="oe_structure"/>
+                <div class="oe_structure">
+                    <section class="s_text_image pt32 pb32 o_colored_level"
+                             data-name="Text - Image" style="background-image: none;">
+                        <div class="container">
+                            <div class="row align-items-center">
+                                <div class="col-lg-6 pt16 pb16 o_colored_level" data-bs-original-title="" title=""
+                                     aria-describedby="tooltip817975">
+                                    <h2 class="o_default_snippet_text"><t t-esc="room.name"/></h2>
+                                    <p>Room type: <t t-esc="room.room_type.name"/></p>
+                                    <p>Price:<t t-esc="room.price"/>đ/Night</p>
+                                    <p>Person: <t t-esc="room.capacity"/></p>
+
+                                </div>
+                                <div class="col-lg-6 pt16 pb16 o_colored_level">
+                                    <img t-attf-src="data:image/jpg;base64,{{ room.img_room}}"
+                                         class="img img-fluid mx-auto" alt="" loading="lazy" data-original-id="400"
+                                         data-original-src="/web/image/400-67cb0b39/website.s_text_image_default_image"
+                                         data-mimetype="image/jpeg" style=""/>
+                                </div>
+                            </div>
+                        </div>
+                    </section>
+                    <div class="container">
+                        <div class="row">
+                            <form role="form" action="/create/booking" method="POST">
+                                <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 200px">
+                                        <span class="s_website_form_label_content">Your Name</span>
+                                        <span class="s_website_form_mark"> *</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <input type="text" class="form-control s_website_form_input" name="name"
+                                               required="1" data-fill-with="name" id="name"/>
+                                    </div>
+                                </div>
+
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 200px">
+                                        <span class="s_website_form_label_content">Adults</span>
+                                        <span class="s_website_form_mark"> *</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <input type="number" class="form-control s_website_form_input" name="adults"
+                                               required="1" data-fill-with="number" id="adults"/>
+                                    </div>
+                                </div>
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label"
+                                           style="width: 200px">
+                                        <span class="s_website_form_label_content">Children</span>
+                                        <span class="s_website_form_mark"> *</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <input type="number" class="form-control s_website_form_input" name="children"
+                                               required="1" data-fill-with="number" id="children"/>
+                                    </div>
+                                </div>
+
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label "
+                                           style="width: 200px">
+                                        <span class="s_website_form_label_content">Room</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <select class="form-control s_website_form_input" name="Room"
+                                                id="room" style="">
+                                            <option t-att-value="room.id" t-esc="room.name"/>
+                                        </select>
+                                    </div>
+                                </div>
+
+
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label "
+                                           style="width: 200px">
+                                        <span class="s_website_form_label_content">Checkin</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                             id="datetimepicker647210241874828" data-target-input="nearest">
+                                            <input type="text"
+                                                   class="form-control datetimepicker-input s_website_form_input"
+                                                   name="Checkin" placeholder="" id="checkin"
+                                                   data-target="#datetimepicker647210241874828"
+                                                   data-fill-with="undefined"/>
+                                            <div class="input-group-append" data-toggle="datetimepicker"
+                                                 data-target="#datetimepicker647210241874828">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="row s_col_no_resize s_col_no_bgcolor">
+                                    <label class="col-form-label col-sm-auto s_website_form_label "
+                                           style="width: 200px">
+                                        <span class="s_website_form_label_content">Checkout</span>
+                                    </label>
+                                    <div class="col-sm">
+                                        <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                             id="datetimepicker64721024187482" data-target-input="nearest">
+                                            <input type="text"
+                                                   class="form-control datetimepicker-input s_website_form_input"
+                                                   name="checkout" placeholder="" id="checkout"
+                                                   data-target="#datetimepicker64721024187482"
+                                                   data-fill-with="undefined"/>
+                                            <div class="input-group-append" data-toggle="datetimepicker"
+                                                 data-target="#datetimepicker64721024187482">
+                                                <div class="input-group-text">
+                                                    <i class="fa fa-calendar"></i>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="form-group col-12 s_website_form_submit pt-10" data-name="Submit Button" style="text-align:center;">
+<!--                                    <div style="width: 200px;" class="s_website_form_label"></div>-->
+                                    <button role="button" type="submit"
+                                            class="btn btn-primary btn-lg mt-10" >
+                                        Submit</button>
+                                    <span id="s_website_form_result"></span>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+                <div class="oe_structure"/>
+            </t>
+        </template>
+    </data>
+
+</odoo>
