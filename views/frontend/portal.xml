@@ -34,7 +34,7 @@
                     </thead>
                     <t t-foreach="reservations" t-as="reservation">
                         <tr>
-                            <td><a t-attf-href=""><t t-esc="reservation.reservation_no"/></a></td>
+                            <td><a t-att-href="'/reservation/%s' %  slug(reservation)"><t t-esc="reservation.reservation_no"/></a></td>
                             <td class="text-right"><span t-field="reservation.checkin"/></td>
                             <td class="text-right"><span t-field="reservation.checkout"/></td>
                             <td class="text-right">

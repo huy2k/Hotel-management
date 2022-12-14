@@ -142,10 +142,15 @@ class ResPartner(models.Model):
     _name = 'res.partner'
     _inherit = 'res.partner'
     _description = 'Res Partner'
-
+    _sql_constraints = [
+        ('iden_uniq', 'UNIQUE (identification_id)', 'You can not have two users with the same identification !')
+    ]
     identification_id = fields.Char(string='Identification No')
     passport_id = fields.Char('Passport No')
     info = fields.Text(string="Extra Info")
+    gender = fields.Selection([('male', 'Male'),
+                               ('female', 'Female'),
+                               ('other', 'Other')], string="Gender")
 
     @api.model
     def create(self, vals):

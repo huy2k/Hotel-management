@@ -37,7 +37,8 @@
                             class="oe_highlight"
                             type="object"
                     />
-                    <field name="state" widget="statusbar"/>
+                    <field name="state" widget="statusbar" />
+
                 </header>
                 <sheet>
                     <div class="oe_button_box">
@@ -77,6 +78,7 @@
                             <field name="checkout"/>
                             <field name="adults" required="1"/>
                             <field name="children"/>
+                            <field name="deposit"/>
                         </group>
                     </group>
                     <notebook>
@@ -120,7 +122,8 @@
         <field name="arch" type="xml">
             <tree
                     decoration-bf="state == 'draft'"
-                    decoration-info="state == 'done'"
+                    decoration-success="state == 'done'"
+                    decoration-primary="state == 'confirm'"
                     decoration-muted="state=='cancel'"
             >
                 <field name="reservation_no"/>

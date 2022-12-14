@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<odoo>
+    <record id="hotel_refund_form" model="ir.ui.view">
+        <field name="name">hotel1.refund:form</field>
+        <field name="model">hotel1.refund</field>
+        <field name="arch" type="xml">
+            <form>
+                <header>
+                    <button name="action_approved" string="Approved"
+                            type="object"
+                            class="oe_highlight" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                    <button name="action_declined" string="Declined"
+                            type="object"
+                            class="oe_highlight" attrs="{'invisible': [('status', '!=', 'draft')]}"/>
+                    <button
+                            name="send_accept_refund_function"
+                            string="Send email accept"
+                            type="object"
+                            class="oe_highlight" attrs="{'invisible': [('status', '!=', 'approved')]}"
+                    />
+                    <button
+                            name="send_declined_refund_function"
+                            string="Send email declined"
+                            type="object"
+                            class="oe_highlight" attrs="{'invisible': [('status', '!=', 'declined')]}"/>
+                    <field name="status"  widget="statusbar" attrs="{'readonly': True}" />
+                </header>
+
+                <sheet>
+                    <group>
+                        <field name="guest"/>
+                        <field name="email_from"/>
+                        <field name="reservation"/>
+                        <field name="reason"/>
+                        <field name="date_refund"/>
+                    </group>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="hotel_refund_tree" model="ir.ui.view">
+        <field name="name">hotel1.refund.tree</field>
+        <field name="model">hotel1.refund</field>
+        <field name="arch" type="xml">
+            <tree>
+                <field name="guest"/>
+                <field name="reservation"/>
+                <field name="reason"/>
+                <field name="status"/>
+                <field name="date_refund"/>
+            </tree>
+        </field>
+    </record>
+
+
+    <record id="action_hotel_refund" model="ir.actions.act_window">
+        <field name="name">Reservation Refund</field>
+        <field name="res_model">hotel1.refund</field>
+        <field name="view_mode">tree,form</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                No data to display.
+            </p>
+        </field>
+    </record>
+
+
+</odoo>

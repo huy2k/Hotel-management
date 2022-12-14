@@ -21,7 +21,7 @@
                 <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
             </xpath>
             <t t-call="website.layout">
-                <t t-set="title">Home</t>
+                <t t-set="title">Room type</t>
 
                 <div class="oe_structure">
                     <div class="room-suits-details-page pt-120 mb-120">
@@ -544,7 +544,7 @@
                         <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
                     </xpath>
                     <t t-call="website.layout">
-                        <t t-set="title">Home</t>
+                        <t t-set="title">Room Type</t>
 
                         <div class="oe_structure">
                             <div class="room-suits-details-page pt-120 mb-120">

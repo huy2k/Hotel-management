@@ -1,6 +1,6 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
-from datetime import date
+from datetime import date, datetime
 
 
 class Folio(models.Model):
@@ -55,13 +55,22 @@ class Folio(models.Model):
                                             that extra days will be calculated.", default=0
     )
     duration_dummy = fields.Float()
-    price_room = fields.Float("Price Room", related="room_id.list_price")
-    total_room = fields.Float("Total room price", compute="computer_price_room")
-    total_service = fields.Float("Total service")
-    total_price = fields.Float("Total ser")
+    price_room = fields.Monetary("Price Room", related="room_id.price")
+    total_room = fields.Monetary("Total room price", compute="computer_price_room")
+    total_service = fields.Monetary("Total service")
+    total_price = fields.Monetary("Total")
     is_invoiced = fields.Boolean(copy=False, default=False)
     reservation_id = fields.Many2one(
         "hotel1.reservation", "Reservation", ondelete="restrict"
+    )
+    option_price = fields.Selection([
+        ('day', 'Day'),
+        ('hour', 'Hour')
+    ], default='day')
+    currency_id = fields.Many2one(
+        'res.currency', string='Currency',
+        readonly=True,
+        store=True
     )
 
     @api.constrains("checkin_date", "checkout_date")
@@ -238,7 +247,7 @@ class Folio(models.Model):
     @api.model
     def create(self, vals):
         vals["name"] = (
-            self.env["ir.sequence"].next_by_code("hotel1.folio") or "New"
+                self.env["ir.sequence"].next_by_code("hotel1.folio") or "New"
         )
         room = vals.get("room_id")
         # print(type(room))
@@ -313,3 +322,62 @@ class HotelServiceLine(models.Model):
         self.total = total
 
 
+class Refund(models.Model):
+    _name = "hotel1.refund"
+    _description = "hotel refund"
+
+    guest = fields.Many2one('res.partner', compute="_compute_guest", string="Guest")
+    email_from = fields.Char(
+        'Email',
+        compute='_compute_email_from', readonly=True)
+    reservation = fields.Many2one('hotel1.reservation')
+    reason = fields.Char("Reason refund")
+    status = fields.Selection([('draft', "Draft"), ('approved', 'Approved'),
+                               ('declined', 'Declined')], default='draft', string="Status refund")
+    date_refund = fields.Datetime("Date refund", default=datetime.today())
+
+    @api.depends('reservation.customer_id')
+    def _compute_guest(self):
+        for res in self:
+            res.guest = res.reservation.customer_id.id
+
+    @api.model
+    def create(self, vals):
+        # reservation = vals.get("reservation")
+        # reservation_obj = self.env["hotel1.reservation"].search([('id', '=', reservation)])
+        # if vals.get('status') == 'approved':
+        #     if reservation_obj.state == 'draft' or reservation_obj.state == 'confirm':
+        #         print("draft")
+        #         reservation_obj.write({'state': 'cancel'})
+        #         reservation_obj.cancel_reservation()
+        result = super(Refund, self).create(vals)
+        return result
+
+    # @api.model
+    # def write(self, vals):
+    #     result = super(Refund, self).write(vals)
+    #     return result
+
+    @api.depends('guest.email')
+    def _compute_email_from(self):
+        for line in self:
+            if line.guest:
+                line.email_from = line.guest.email
+
+    def action_approved(self):
+        self.status = 'approved'
+        reservation_obj = self.env["hotel1.reservation"].search([('id', '=', self.reservation.id)])
+        reservation_obj.cancel_reservation()
+
+    def action_declined(self):
+        self.status = 'declined'
+
+    def send_accept_refund_function(self):
+        template = self.env.ref('Hotel-management.hotel_refund_email_template').id
+        template_id = self.env['mail.template'].browse(template)
+        template_id.send_mail(self.id, force_send=True)
+
+    def send_declined_refund_function(self):
+        template = self.env.ref('Hotel-management.hotel_refund_declined_email_template').id
+        template_id = self.env['mail.template'].browse(template)
+        template_id.send_mail(self.id, force_send=True)

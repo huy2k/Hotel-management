@@ -90,6 +90,22 @@ class HotelReservation(models.Model):
         string="Folio",
     )
     no_of_folio = fields.Integer("No. Folio", compute="_compute_folio_count")
+    deposit = fields.Monetary("Deposit", compute="_compute_deposit")
+    currency_id = fields.Many2one(
+        'res.currency', string='Currency',
+        readonly=True,
+        store=True
+    )
+    desc = fields.Text("Description")
+
+    @api.depends('reservation_line')
+    def _compute_deposit(self):
+        deposit = 0
+        for reservation in self:
+            for line in reservation.reservation_line:
+                for r in line.reserve:
+                    deposit += r.price * 0.2
+        self.deposit = deposit
 
     def unlink(self):
         """
@@ -115,7 +131,7 @@ class HotelReservation(models.Model):
         @return: raise a warning depending on the validation
         """
         ctx = dict(self._context) or {}
-        if self.adults < 0  or  self.children < 0:
+        if self.adults < 0 or self.children < 0:
             raise ValidationError(_("Please not enter number negative."))
         for reservation in self:
             cap = 0
@@ -123,7 +139,7 @@ class HotelReservation(models.Model):
                 print("rec", rec)
                 for room in rec.reserve:
                     print(room.capacity)
-                     # if len(rec.reserve) == 0:
+                    # if len(rec.reserve) == 0:
                 #     raise ValidationError(_("Please Select Rooms For Reservation."))
                 cap += sum(room.capacity for room in rec.reserve)
                 print("suc chua: ", cap)
@@ -284,6 +300,8 @@ class HotelReservation(models.Model):
         reservation_lines = hotel_res_line_obj.search([("line_id", "in", self.ids)])
         for reservation_line in reservation_lines:
             reservation_line.reserve.write({"status": "open"})
+        # refund = self.env['hotel1.refund'].search([('reservation', '=', self.id)])
+        # refund.send_accept_refund_function()
         return True
 
     def set_to_draft_reservation(self):

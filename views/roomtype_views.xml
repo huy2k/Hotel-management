@@ -60,8 +60,12 @@
 
                                             <field name="name" placeholder="Room type Name"/>
                                         </strong>
+
                                     </div>
                                 </div>
+                                <p>Children: <field name="max_children"/> </p>
+                                <p>Adult:  <field name="max_adults"/> </p>
+                                 <p>Price: <field name="price"/></p>
                             </div>
 
                         </div>

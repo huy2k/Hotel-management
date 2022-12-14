@@ -14,7 +14,7 @@ hotel1.access_hotel1_room_reservation_line,access_hotel1_room_reservation_line,m
 hotel1.access_hotel1_floor,access_hotel1_floor,model_hotel1_floor,base.group_user,1,1,1,1
 Hotel-management.access_hotel1_room_amenities_type,access_hotel1_room_amenities_type,Hotel-management.model_hotel1_room_amenities_type,base.group_user,1,1,1,1
 Hotel-management.access_hotel1_room_amenities,access_hotel1_room_amenities,Hotel-management.model_hotel1_room_amenities,base.group_user,1,1,1,1
-
+Hotel-management.access_hotel1_refund,access_hotel1_refund,Hotel-management.model_hotel1_refund,base.group_user,1,1,1,1
 access_hotel1_room,access_hotel1_room,model_hotel1_room,Hotel-management.group_manager_hotel,1,1,1,1
 access_hotel1_room_type,access_hotel1_room_type,model_hotel1_room_type,Hotel-management.group_manager_hotel,1,1,1,1
 access_hotel1_room_status,access_hotel1_room_status,model_hotel1_room_status,Hotel-management.group_manager_hotel,1,1,1,1
@@ -22,9 +22,31 @@ Hotel-management.access_hotel1_room_amenities_type,access_hotel1_room_amenities_
 Hotel-management.access_hotel1_room_amenities,access_hotel1_room_amenities,Hotel-management.model_hotel1_room_amenities,Hotel-management.group_manager_hotel,1,1,1,1
 
 access_hotel1_room,access_hotel1_room,model_hotel1_room,Hotel-management.group_receptionist,1,1,1,0
-access_hotel1_room_type,access_hotel1_room_type,model_hotel1_room_type,Hotel-management.group_receptionist,1,0,0,0
+access_hotel1_room_type,access_hotel1_room_type,model_hotel1_room_type,Hotel-management.group_receptionist,1,1,0,0
 access_hotel1_room_status,access_hotel1_room_status,model_hotel1_room_status,Hotel-management.group_receptionist,1,1,1,0
 Hotel-management.access_hotel1_room_amenities_type,access_hotel1_room_amenities_type,Hotel-management.model_hotel1_room_amenities_type,Hotel-management.group_receptionist,1,1,1,0
 Hotel-management.access_hotel1_room_amenities,access_hotel1_room_amenities,Hotel-management.model_hotel1_room_amenities,Hotel-management.group_receptionist,1,1,1,0
 
+Hotel-management.access_hotel1_room,access_hotel1_room: portal,model_hotel1_room,Hotel-management.group_customer,1,0,0,0
+Hotel-management.access_hotel1_room_type,access_hotel1_room_type: portal,model_hotel1_room_type,Hotel-management.group_customer,1,0,0,0
+Hotel-management.access_hotel1_room_status,access_hotel1_room_status: portal,model_hotel1_room_status,Hotel-management.group_customer,1,0,0,0
+Hotel-management.access_hotel1_room_amenities_type,access_hotel1_room_amenities_type,Hotel-management.model_hotel1_room_amenities_type,Hotel-management.group_customer,1,0,0,0
+Hotel-management.access_hotel1_room_amenities,access_hotel1_room_amenities,Hotel-management.model_hotel1_room_amenities,Hotel-management.group_customer,1,0,0,0
+Hotel-management.access_hotel1_reservation,access_hotel1_reservation,model_hotel1_reservation,Hotel-management.group_customer,1,0,1,0
+Hotel-management.access_hotel1_reservation_line,access_hotel1_reservation_line,model_hotel1_reservation_line,Hotel-management.group_customer,1,0,1,0
+Hotel-management.access_hotel1_room_reservation_line,access_hotel1_room_reservation_line,model_hotel1_room_reservation_line,Hotel-management.group_customer,1,0,1,0
+Hotel-management.access_hotel1_refund,access_hotel1_refund,Hotel-management.model_hotel1_refund,Hotel-management.group_customer,1,1,1,1
 
+access_hotel1_room,access_hotel1_room public,model_hotel1_room,base.group_public,1,0,0,0
+access_hotel1_room_type,access_hotel1_room_type public,model_hotel1_room_type,base.group_public,1,0,0,0
+Hotel-management.access_hotel1_room_amenities_type,access_hotel1_room_amenities_type,Hotel-management.model_hotel1_room_amenities_type,base.group_public,1,0,0,0
+Hotel-management.access_hotel1_room_amenities,access_hotel1_room_amenities,Hotel-management.model_hotel1_room_amenities,base.group_public,1,0,0,0
+hotel1.access_hotel1_reservation,access_hotel1_reservation,model_hotel1_reservation,base.group_public,1,0,1,0
+hotel1.access_hotel1_reservation_line,access_hotel1_reservation_line,model_hotel1_reservation_line,base.group_public,1,0,1,0
+hotel1.access_hotel1_room_reservation_line,access_hotel1_room_reservation_line,model_hotel1_room_reservation_line,base.group_public,1,0,1,0
+
+
+access_product_product,product.product public,product.model_product_product,base.group_public,1,0,0,0
+access_product_product_customers,product.product customer,product.model_product_product,Hotel-management.group_customer,1,0,0,0
+
+Hotel-management.access_folio_report_wizard1,access_folio_report_wizard1,Hotel-management.model_folio_report_wizard1,base.group_user,1,0,1,0

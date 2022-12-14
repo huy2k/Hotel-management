@@ -17,7 +17,7 @@
     'version': '0.1',
 
     # any module necessary for this one to work correctly
-    'depends': ['website_sale', 'account', 'hr', 'portal', 'base'],
+    'depends': ['website_sale', 'account', 'hr', 'portal', 'base', 'mail'],
 
     # always loaded
     'data': [
@@ -27,6 +27,7 @@
         'data/hotel_sequence.xml',
         'data/hotel_reservation_sequence.xml',
         'data/hotel_folio_sequence.xml',
+        'data/email_refund_template.xml',
         'views/data.xml',
         'views/room_view.xml',
         'views/service_views.xml',
@@ -37,12 +38,20 @@
         'views/employee_view.xml',
         'views/folio_view.xml',
         'views/hotel_reservation_view.xml',
+        'views/refund.xml',
         'views/web-form.xml',
         'views/frontend/home.xml',
+
+        # 'report/report_view.xml',
+        # 'report/hotel_folio_report_template.xml',
+        # 'wizard/hotel_wizard.xml',
+
         'views/frontend/bookform.xml',
         'views/frontend/roomtype_website.xml',
         'views/frontend/search_booking.xml',
         'views/frontend/portal.xml',
+        'views/frontend/reservation_detail.xml',
+        'views/frontend/refund_booking.xml',
         'views/menu_views.xml',
     ],
     # 'assets': {

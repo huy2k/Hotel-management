@@ -1,0 +1,51 @@
+<odoo>
+    <template id="reservation_details">
+        <t t-call="website.layout">
+            <t t-set="title">Reservation Detail</t>
+            <div class="oe_structure"></div>
+            <div class="home4-facilities pt-120 mb-120">
+                <div class="container mt-20">
+                    <div class="row">
+                        <div class="section-title-4 text-center">
+                            <h1>Hotel Reservation</h1>
+                        </div>
+                        <div class="col-12 mt-20">
+                            <h2>Reservation No:<t t-esc="reservation.reservation_no"/></h2>
+                        </div>
+                        <div class="col-12">
+                            <h4>Date order: <t t-esc="reservation.date_order"/></h4>
+                        </div>
+                        <div class="col-6 col-sm-6 mt-20">
+                            <h4>Date check in: <t t-esc="reservation.checkin"/></h4>
+                        </div>
+                        <div class="col-6 col-sm-6 mt-20">
+                            <h4>Date check out: <t t-esc="reservation.checkout"/></h4>
+                        </div>
+                        <div class="col-12 mt-20">
+                            <h4>Deposit: <t t-esc="reservation.deposit"/>đ</h4>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-12">
+                            <t t-foreach="room_reservation" t-as="room">
+                                <div class="col">
+                                    <h3>Room reservation: <t t-esc="room.room_id.name"/></h3>
+                                </div>
+                            </t>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col-12">
+
+                            <h3><a class="btn btn-warning" t-att-href="'/refund/%s' %  slug(reservation)">
+                                Refund</a></h3>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </t>
+    </template>
+
+</odoo>

@@ -1,0 +1,62 @@
+<odoo>
+    <template id="refund_booking">
+        <xpath expr="." position="inside">
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
+
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap.min.css"/>
+
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/boxicons.min.css"/>
+
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap-icons.css"/>
+
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery-ui.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery.fancybox.min.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/swiper-bundle.min.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/slick-theme.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/slick.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/nice-select.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/magnific-popup.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/odometer.css"/>
+            <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
+        </xpath>
+        <t t-call="website.layout">
+            <t t-set="title">Refund</t>
+            <div class="oe_structure"></div>
+            <div class="container mt-30">
+                <div class="row">
+                    <div class="col-12">
+                        <form role="form" action="/refund-reservation" method="POST">
+                            <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
+                                <label class="col-form-label col-sm-auto s_website_form_label"
+                                       style="width: 200px">
+                                    <span class="s_website_form_label_content">Reason</span>
+                                    <span class="s_website_form_mark"> *</span>
+                                </label>
+                                <div class="col-sm">
+                                    <input type="text" class="form-control s_website_form_input" name="reason"
+                                           required="1" data-fill-with="name" id="reason"/>
+                                </div>
+                                 <div class="col-sm">
+                                        <select class="form-control s_website_form_input" name="reservation"
+                                                id="reservation" style="">
+                                                <option t-att-value="reservation.id" t-esc="reservation.reservation_no"/>
+                                        </select>
+                                    </div>
+                                <div class="form-group col-12 s_website_form_submit" data-name="Submit Button">
+                                    <div style="width: 200px;" class="s_website_form_label"></div>
+                                    <button role="button" type="submit"
+                                            class="btn btn-primary btn-lg ">
+                                        Submit</button>
+                                    <span id="s_website_form_result"></span>
+                                </div>
+                            </div>
+
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="oe_structure"></div>
+        </t>
+    </template>
+</odoo>

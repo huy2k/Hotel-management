@@ -18,8 +18,8 @@ class Room(models.Model):
         "product.product",
         "Product_id",
         required=True,
-        delegate=True,
-        ondelete="cascade",
+        delegate=True, ondelete='set null'
+        # ondelete="cascade",
     )
     room_type = fields.Many2one("hotel1.room.type", "Room type")
     floor_id = fields.Many2one(
@@ -40,12 +40,28 @@ class Room(models.Model):
         "hotel1.room.reservation.line", "room_id", string="Room Reserve Line"
     )
     price = fields.Monetary(string="Price", compute='_compute_price', readonly=True, store=True)
+    price_hour = fields.Monetary(string="Price hour", related="room_type.price_hour", readonly=True)
+
     currency_id = fields.Many2one(
         'res.currency', string='Currency',
         readonly=True,
         store=True
     )
     img_room = fields.Image("Image Room")
+    kanbancolor = fields.Integer('Color', compute="set_kanban_color")
+
+    def set_kanban_color(self):
+        for record in self:
+            kanban_color = 0
+            if record.status == 'open':
+                kanban_color = 4
+            elif record.status == 'close':
+                kanban_color = 1
+            elif record.status == 'reservation':
+                kanban_color = 2
+            elif record.status == 'booking':
+                kanban_color = 5
+            record.kanbancolor = kanban_color
 
     @api.depends('room_type.price')
     def _compute_price(self):
@@ -53,7 +69,7 @@ class Room(models.Model):
             room.price = room.room_type.price
 
     def unlink(self):
-        if self.status == "booking":
+        if self.status == "booking" or self.status == 'reservation':
             raise ValidationError(
                 (
                     """Room booking """
@@ -73,6 +89,8 @@ class RoomType(models.Model):
         "hotel1.room.amenities", string="Room Amenities", help="List of room amenities."
     )
     price = fields.Monetary("price", 'currency_id')
+    price_hour = fields.Monetary(string="Price hour")
+
     currency_id = fields.Many2one(
         'res.currency', string='Currency', required=True,
         default=lambda self: self.env.user.company_id.currency_id)
