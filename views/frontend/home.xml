@@ -278,13 +278,13 @@
                                                 <div class="row gx-2 gy-4">
                                                     <input type="hidden" name="csrf_token"
                                                            t-att-value="request.csrf_token()"/>
-                                                    <div class="col-lg-3 col-md-6">
+                                                    <div class="col-lg-4 col-md-6">
                                                         <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
                                                              id="datetimepicker6472102418748"
                                                              data-target-input="nearest">
                                                             <input type="text"
                                                                    class="form-control datetimepicker-input s_website_form_input"
-                                                                   name="checkin" placeholder="" id="checkin"
+                                                                   name="checkin" placeholder="Checkin" id="checkin"
                                                                    data-target="#datetimepicker6472102418748"
                                                                    data-fill-with="undefined"/>
                                                             <div class="input-group-append" data-toggle="datetimepicker"
@@ -298,13 +298,13 @@
                                                         </div>
                                                     </div>
                                                     <!--                                            -->
-                                                    <div class="col-lg-3 col-md-6">
+                                                    <div class="col-lg-4 col-md-6">
                                                         <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
                                                              id="datetimepicker6472102418749"
                                                              data-target-input="nearest">
                                                             <input type="text"
                                                                    class="form-control datetimepicker-input s_website_form_input"
-                                                                   name="checkout" placeholder="" id="checkout"
+                                                                   name="checkout" placeholder="Checkout" id="checkout"
                                                                    data-target="#datetimepicker6472102418749"
                                                                    data-fill-with="undefined"/>
                                                             <div class="input-group-append" data-toggle="datetimepicker"
@@ -318,42 +318,64 @@
                                                         </div>
                                                     </div>
 
-                                                    <div class="col-lg-3 col-md-6">
-                                                        <div class="searchbox-input two three">
+<!--                                                    <div class="col-lg-4 col-md-6">-->
+<!--                                                        <div class="wp-block-text__inside-wrapper">-->
+<!--                                                            <select class="form-control s_website_form_input"-->
+<!--                                                                    name="room_type"-->
+<!--                                                                    id="room" style="">-->
+<!--                                                                <t t-foreach="room_types" t-as="room_type">-->
+<!--                                                                    <option t-att-value="room_type.id"-->
+<!--                                                                            t-esc="room_type.name"/>-->
+<!--                                                                </t>-->
+<!--                                                            </select>-->
+<!--                                                        </div>-->
+                                                        <!--                                                        <div class="searchbox-input two three">-->
 
-                                                            <select class="form-control s_website_form_input"
-                                                                    style="display: none;" name="room_type">
-                                                                <t t-foreach="room_types" t-as="room_type">
-                                                                    <option t-att-value="room_type.id"
-                                                                            t-esc="room_type.name"/>
-                                                                </t>
-                                                            </select>
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3 col-md-6">
-                                                        <div class="">
-                                                            <select class="form-control s_website_form_input"
-                                                                    style="display: none;" name="person">
-                                                                <option value="1">1 Person</option>
-                                                                <option value="2">2 Person</option>
-                                                                <option value="3">3 Person</option>
-                                                                <option value="4">4 Person</option>
-                                                            </select>
+                                                        <!--                                                            <select class="form-control s_website_form_input"-->
+                                                        <!--                                                                    style="display: none;" name="room_type">-->
+                                                        <!--                                                                <t t-foreach="room_types" t-as="room_type">-->
+                                                        <!--                                                                    <option t-att-value="room_type.id"-->
+                                                        <!--                                                                            t-esc="room_type.name"/>-->
+                                                        <!--                                                                </t>-->
+                                                        <!--                                                            </select>-->
+                                                        <!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-lg-4 col-md-6" >-->
+<!--                                                        <div class="wp-block-text__inside-wrapper">-->
+<!--                                                            <select class="form-control s_website_form_input"-->
+<!--                                                                    name="room_type"-->
+<!--                                                                    id="room" style="">-->
+<!--                                                                <t t-foreach="room_types" t-as="room_type">-->
+<!--                                                                    <option t-att-value="room_type.id"-->
+<!--                                                                            t-esc="room_type.name"/>-->
+<!--                                                                </t>-->
+<!--                                                            </select>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-lg-3 col-md-6">-->
+<!--                                                        <div class="">-->
+<!--                                                            <select class="form-control s_website_form_input"-->
+<!--                                                                    style="display: none;" name="person">-->
+<!--                                                                <option value="1">1 Person</option>-->
+<!--                                                                <option value="2">2 Person</option>-->
+<!--                                                                <option value="3">3 Person</option>-->
+<!--                                                                <option value="4">4 Person</option>-->
+<!--                                                            </select>-->
 
-                                                        </div>
-                                                    </div>
-                                                    <div class="col-lg-3 col-md-6">
-                                                        <div class="searchbox-input two three">
-                                                            <select class="form-control s_website_form_input"
-                                                                    style="display: none;" name="rooms">
-                                                                <option value="1">1 Room</option>
-                                                                <option value="2">2 Room</option>
-                                                                <option value="3">3 Room</option>
-                                                                <option value="4">4 Room</option>
-                                                                <option value="5">5 Room</option>
-                                                            </select>
-                                                        </div>
-                                                    </div>
+<!--                                                        </div>-->
+<!--                                                    </div>-->
+<!--                                                    <div class="col-lg-3 col-md-6">-->
+<!--                                                        <div class="searchbox-input two three">-->
+<!--                                                            <select class="form-control s_website_form_input"-->
+<!--                                                                    style="display: none;" name="rooms">-->
+<!--                                                                <option value="1">1 Room</option>-->
+<!--                                                                <option value="2">2 Room</option>-->
+<!--                                                                <option value="3">3 Room</option>-->
+<!--                                                                <option value="4">4 Room</option>-->
+<!--                                                                <option value="5">5 Room</option>-->
+<!--                                                            </select>-->
+<!--                                                        </div>-->
+<!--                                                    </div>-->
                                                 </div>
                                             </div>
                                             <div class="col-lg-3 px-0">

@@ -9,12 +9,14 @@
                            />
                     <group>
                         <field name="name"/>
+                        <field name="max_adults"/>
+                        <field name="max_children"/>
                         <field name="limit_person"/>
                         <field name="price"/>
                         <field name="currency_id"/>
                     </group>
-                    <notebook name="Amentities">
-                        <page>
+                    <notebook name="Amenities">
+                        <page name="Amenities">
                             <field name="room_amenities_ids"/>
                         </page>
                     </notebook>

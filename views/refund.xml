@@ -29,7 +29,7 @@
                 <sheet>
                     <group>
                         <field name="guest"/>
-                        <field name="email_from"/>
+<!--                        <field name="email_from"/>-->
                         <field name="reservation"/>
                         <field name="reason"/>
                         <field name="date_refund"/>
@@ -43,7 +43,7 @@
         <field name="name">hotel1.refund.tree</field>
         <field name="model">hotel1.refund</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree default_order='date_refund desc'>
                 <field name="guest"/>
                 <field name="reservation"/>
                 <field name="reason"/>

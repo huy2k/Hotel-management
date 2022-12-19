@@ -43,6 +43,13 @@ class Hotel(http.Controller):
             'room_type': room_type, 'rooms': rooms
         })
 
+    @http.route('/rooms/<model("hotel1.room"):room>', auth="public",
+                website=True)
+    def room_type(self, room):
+        return http.request.render('Hotel-management.view_detail_room', {
+            'room': room
+        })
+
     @http.route('/book-form', auth="public", website=True)
     def booking_form(self, **kw):
         return http.request.render('Hotel-management.booking_form')
@@ -56,11 +63,14 @@ class Hotel(http.Controller):
         checkin = parser.parse(kwargs.get('Checkin'))
         checkout = parser.parse(kwargs.get('checkout'))
         room = int(kwargs.get('Room'))
+
+        identification = kwargs.get('identification')
         # checkout = datetime.strptime(checkout, "%Y/%m/%d %H:%M:%S").strftime("%d-%m-%Y %H:%M:%S")
         print(partner)
 
         reverse_vals = {'customer_name': kwargs.get('name'),
                         'customer_id': partner.id,
+                        'identification': identification,
                         'checkin': checkin,
                         'checkout': checkout,
                         'adults': kwargs.get('adults'),
@@ -78,7 +88,7 @@ class Hotel(http.Controller):
 
     @http.route('/searchs', auth="public", website=True)
     def search_rooms(self, **kwargs):
-        return http.request.render('Hotel-management.search_room')
+        return http.request.render('Hotel-management.search_rooms')
 
     @http.route('/search/room', auth="public", website=True)
     def search_room(self, **kwargs):
@@ -97,7 +107,6 @@ class Hotel(http.Controller):
 
         # get room open
         rooms = http.request.env['hotel1.room'].sudo().search([('status', '=', 'open')])
-        print("so phong trong", rooms)
 
         reservation_obj = http.request.env["hotel1.reservation"].sudo().search([])
         print(reservation_obj)
@@ -135,15 +144,16 @@ class Hotel(http.Controller):
                             room_open = http.request.env["hotel1.room"].search([('id', '=', room.id)])
                             rooms += room_open
 
-        print("so phong trong sau check ngay", set(rooms))
-        rooms = set(rooms)
+        # print("so phong trong sau check ngay", len(set(rooms)))
+        # rooms = set(rooms)
 
-        return http.request.render('Hotel-management.search_room', {
-            'check_in': checkin, 'check_out': checkout, 'rooms': rooms
+        return http.request.render('Hotel-management.search_rooms', {
+            'check_in': checkin, 'check_out': checkout, 'rooms': rooms, 'count_room': len(set(rooms))
         })
 
-    @http.route('/room/<model("hotel1.room"):room>', auth='public', website=True)
+    @http.route('/room/<model("hotel1.room"):room>', auth='user', website=True)
     def roomtype_website(self, room):
+        room = http.request.env['hotel1.room'].sudo().browse(room.id)
         return http.request.render('Hotel-management.view_detail_room', {
             'room': room
         })
@@ -169,7 +179,8 @@ class Hotel(http.Controller):
                         [
                             ("room_id", "=", room.id),
                         ]):
-                    room_ids += http.request.env["hotel1.room.reservation.line"].sudo().search([('room_id', '=', room.id)])
+                    room_ids += http.request.env["hotel1.room.reservation.line"].sudo().search(
+                        [('room_id', '=', room.id)])
         room_ids = set(room_ids)
         return http.request.render('Hotel-management.reservation_details',
                                    {'reservation': reservation,
@@ -195,11 +206,12 @@ class Hotel(http.Controller):
         if reservation_obj.state == 'cancel' or reservation_obj.state == 'done':
             raise ValidationError(
                 _(
-                    "Room cannot have refund \n"
+                    "Room cannot have cancel \n"
                 )
             )
         else:
-            refund_obj = http.request.env['hotel1.refund'].sudo().browse(reservation)
+            refund_obj = http.request.env['hotel1.refund'].sudo().search([('reservation', '=', reservation)])
+            print(refund_obj.reservation)
             if not refund_obj:
                 refund_obj.create({'reservation': reservation, 'reason': reason})
             else:

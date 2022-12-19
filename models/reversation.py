@@ -58,7 +58,7 @@ class Folio(models.Model):
     price_room = fields.Monetary("Price Room", related="room_id.price")
     total_room = fields.Monetary("Total room price", compute="computer_price_room")
     total_service = fields.Monetary("Total service")
-    total_price = fields.Monetary("Total")
+    total_price = fields.Monetary("Total", compute="_compute_total_price", store=True)
     is_invoiced = fields.Boolean(copy=False, default=False)
     reservation_id = fields.Many2one(
         "hotel1.reservation", "Reservation", ondelete="restrict"
@@ -72,6 +72,16 @@ class Folio(models.Model):
         readonly=True,
         store=True
     )
+
+    @api.depends('total_room', 'total_service', 'service_line_ids')
+    def _compute_total_price(self):
+        total = 0.0
+        total_all = 0.0
+        for i in self:
+            for line in i.service_line_ids:
+                total += line.total
+            total_all = i.total_room + total
+            i.total_price = total_all
 
     @api.constrains("checkin_date", "checkout_date")
     def _check_dates(self):
@@ -127,8 +137,9 @@ class Folio(models.Model):
     @api.depends('duration', 'room_id')
     def computer_price_room(self):
         total = 0.0
-        total = self.price_room * self.duration
-        self.total_room = total
+        for i in self:
+            total = i.price_room * i.duration
+            i.total_room = total
 
     def action_done(self):
         self.hotel_policy = 'done'
@@ -325,11 +336,11 @@ class HotelServiceLine(models.Model):
 class Refund(models.Model):
     _name = "hotel1.refund"
     _description = "hotel refund"
-
+    _order = 'date_refund asc'
     guest = fields.Many2one('res.partner', compute="_compute_guest", string="Guest")
-    email_from = fields.Char(
-        'Email',
-        compute='_compute_email_from', readonly=True)
+    # email_from = fields.Char(
+    #     'Email',
+    #     compute='_compute_email_from', readonly=True)
     reservation = fields.Many2one('hotel1.reservation')
     reason = fields.Char("Reason refund")
     status = fields.Selection([('draft', "Draft"), ('approved', 'Approved'),
@@ -341,28 +352,28 @@ class Refund(models.Model):
         for res in self:
             res.guest = res.reservation.customer_id.id
 
-    @api.model
-    def create(self, vals):
-        # reservation = vals.get("reservation")
-        # reservation_obj = self.env["hotel1.reservation"].search([('id', '=', reservation)])
-        # if vals.get('status') == 'approved':
-        #     if reservation_obj.state == 'draft' or reservation_obj.state == 'confirm':
-        #         print("draft")
-        #         reservation_obj.write({'state': 'cancel'})
-        #         reservation_obj.cancel_reservation()
-        result = super(Refund, self).create(vals)
-        return result
+    # @api.model
+    # def create(self, vals):
+    #     # reservation = vals.get("reservation")
+    #     # reservation_obj = self.env["hotel1.reservation"].search([('id', '=', reservation)])
+    #     # if vals.get('status') == 'approved':
+    #     #     if reservation_obj.state == 'draft' or reservation_obj.state == 'confirm':
+    #     #         print("draft")
+    #     #         reservation_obj.write({'state': 'cancel'})
+    #     #         reservation_obj.cancel_reservation()
+    #     result = super(Refund, self).create(vals)
+    #     return result
 
     # @api.model
     # def write(self, vals):
     #     result = super(Refund, self).write(vals)
     #     return result
 
-    @api.depends('guest.email')
-    def _compute_email_from(self):
-        for line in self:
-            if line.guest:
-                line.email_from = line.guest.email
+    # @api.depends('guest.email')
+    # def _compute_email_from(self):
+    #     for line in self:
+    #         if line.guest:
+    #             line.email_from = line.guest.email
 
     def action_approved(self):
         self.status = 'approved'
@@ -373,11 +384,11 @@ class Refund(models.Model):
         self.status = 'declined'
 
     def send_accept_refund_function(self):
-        template = self.env.ref('Hotel-management.hotel_refund_email_template').id
+        template = self.env.ref('Hotel-management.hotel1_refund_email_template').id
         template_id = self.env['mail.template'].browse(template)
         template_id.send_mail(self.id, force_send=True)
 
     def send_declined_refund_function(self):
-        template = self.env.ref('Hotel-management.hotel_refund_declined_email_template').id
+        template = self.env.ref('Hotel-management.hotel1_refund_declined_email_template').id
         template_id = self.env['mail.template'].browse(template)
         template_id.send_mail(self.id, force_send=True)

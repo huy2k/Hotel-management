@@ -17,10 +17,10 @@ class Room(models.Model):
     product_id = fields.Many2one(
         "product.product",
         "Product_id",
-        required=True,
-        delegate=True, ondelete='set null'
+        # delegate=True,
         # ondelete="cascade",
     )
+    name = fields.Char("name")
     room_type = fields.Many2one("hotel1.room.type", "Room type")
     floor_id = fields.Many2one(
         "hotel1.floor",
@@ -49,6 +49,7 @@ class Room(models.Model):
     )
     img_room = fields.Image("Image Room")
     kanbancolor = fields.Integer('Color', compute="set_kanban_color")
+    description = fields.Char("Description")
 
     def set_kanban_color(self):
         for record in self:
@@ -68,6 +69,11 @@ class Room(models.Model):
         for room in self:
             room.price = room.room_type.price
 
+    @api.model
+    def create(self, vals):
+        product_obj = self.env["product.product"].create({'name': vals.get('name')})
+        vals["product_id"] = product_obj.id
+        return super(Room, self).create(vals)
     def unlink(self):
         if self.status == "booking" or self.status == 'reservation':
             raise ValidationError(
@@ -83,7 +89,7 @@ class RoomType(models.Model):
 
     name = fields.Char("Name Room Type")
     max_adults = fields.Integer("Max adults")
-    max_children = fields.Integer("Max adults")
+    max_children = fields.Integer("Max children")
     limit_person = fields.Integer("Limit Person")
     room_amenities_ids = fields.Many2many(
         "hotel1.room.amenities", string="Room Amenities", help="List of room amenities."

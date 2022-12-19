@@ -25,6 +25,7 @@ class HotelReservation(models.Model):
         default=lambda self: fields.Datetime.now(),
     )
     customer_name = fields.Char("Name")
+    identification = fields.Char("Identification_no")
     customer_id = fields.Many2one(
         "res.partner",
         "Guest Name",
@@ -187,7 +188,6 @@ class HotelReservation(models.Model):
         return super(HotelReservation, self).create(vals)
 
     def write(self, vals):
-        print(vals)
         res = super(HotelReservation, self).write(vals)
         return res
 
@@ -367,6 +367,13 @@ class HotelReservation(models.Model):
                     duration -= 1
         value.update({"duration": duration})
         return value
+
+    def send_notification_booking_function(self):
+        template = self.env.ref('Hotel-management.hotel_reservation_email_template').id
+        template_id = self.env['mail.template'].browse(template)
+        template_id.send_mail(self.id, force_send=True)
+
+
 
     # def open_folio_view(self):
     #     folios = self.mapped("folio_id")

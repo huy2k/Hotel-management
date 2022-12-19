@@ -2,30 +2,28 @@
     <data noupdate="1">
 
 
-        <record id="hotel_refund_email_template" model="mail.template">
+        <record id="hotel1_refund_email_template" model="mail.template">
             <field name="name">Refund Hotel Email</field>
             <field name="model_id" ref="Hotel-management.model_hotel1_refund"/>
             <field name="subject">Refund Notification</field>
             <field name="email_from">{{ object.create_uid.email_formatted or ''}}</field>
-            <field name="email_to">{{ object.guest.id and object.email_from }}</field>
+            <field name="email_to">{{ object.guest.id and object.guest.email }}</field>
 
             <field name="body_html" type="html">
                 <div class="text-center">
                     <p>Dear <t t-esc="object.guest.name"/></p>
                 </div>
-                <p>We are pleased to confirm that your refund request has been accepted.
-                    The amount of refund will be on your account in 24 hours.
-                    This time interval can change up to 48 hours according to your bank.
-                    We are very sorry for this inconvenience. We hope to see you soon.</p>
+                <p>Khách sạn chúng tôi chấp nhận đề nghị hủy phòng của bạn.</p>
+                <p>Xin chào và hẹn gặp lại.</p>
             </field>
         </record>
 
-        <record id="hotel_refund_declined_email_template" model="mail.template">
+        <record id="hotel1_refund_declined_email_template" model="mail.template">
             <field name="name">Refund Declined Hotel Email</field>
             <field name="model_id" ref="Hotel-management.model_hotel1_refund"/>
             <field name="subject">Refund Notification</field>
             <field name="email_from">{{ object.create_uid.email_formatted or ''}}</field>
-            <field name="email_to">{{ object.guest.id and object.email_from }}</field>
+            <field name="email_to">{{ object.guest.id and object.guest.email }}</field>
 
             <field name="body_html" type="html">
                 <div class="text-center">

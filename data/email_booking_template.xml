@@ -1,0 +1,29 @@
+
+<odoo>
+    <data noupdate="1">
+        <record id="hotel_reservation_email_template" model="mail.template">
+            <field name="name">Reservation Hotel Email</field>
+            <field name="model_id" ref="Hotel-management.model_hotel1_reservation"/>
+            <field name="subject">Thông báo đặt phòng</field>
+            <field name="email_from">{{ object.create_uid.email_formatted or ''}}</field>
+            <field name="email_to">{{ object.customer_id.id and object.customer_id.email }}</field>
+
+            <field name="body_html" type="html">
+                <div class="text-center">
+                    <p>Dear <t t-esc="object.customer_id.name"/></p>
+                </div>
+                <p>Bạn đã đặt phòng thành công</p>
+                <p>Thời gian check in  của bạn là: <t t-esc="object.checkin"/></p>
+                <p>Thời gian check out  của bạn là: <t t-esc="object.checkout"/></p>
+
+                <t t-foreach="object.reservation_line" t-as="reservation_line">
+                    <t t-foreach="reservation_line.reserve" t-as="room">
+                        <t t-if="room.room_reservation_line_ids">
+                              <p>Phòng của bạn là: <t t-esc="room.name"/></p>
+                        </t>
+                    </t>
+                </t>
+            </field>
+        </record>
+    </data>
+</odoo>

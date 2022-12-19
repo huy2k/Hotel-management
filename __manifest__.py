@@ -28,6 +28,7 @@
         'data/hotel_reservation_sequence.xml',
         'data/hotel_folio_sequence.xml',
         'data/email_refund_template.xml',
+        'data/email_booking_template.xml',
         'views/data.xml',
         'views/room_view.xml',
         'views/service_views.xml',
@@ -40,6 +41,7 @@
         'views/hotel_reservation_view.xml',
         'views/refund.xml',
         'views/web-form.xml',
+        'views/invoices.xml',
         'views/frontend/home.xml',
 
         # 'report/report_view.xml',

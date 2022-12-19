@@ -32,4 +32,12 @@
             parent="hotel_management_menu"
             sequence="3"
     />
+    <menuitem
+            name="Invoice"
+            id="menu_action_hotel_invoice"
+            action="action_hotel_invoice"
+            parent="hotel_management_menu"
+            sequence="4"
+    />
+
 </odoo>
