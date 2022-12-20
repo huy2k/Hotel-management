@@ -98,12 +98,12 @@
                                     </p>
                                     <h4>Room Feature.</h4>
 
-                                    <ul class="room-features extra-service d-flex align-items-center">
-                                        <t t-foreach="room_type.room_amenities_ids" t-as="amenity">
-                                             <li><i class="bi bi-circle"></i><t t-esc="amenity.name"/>
-                                            </li>
-                                        </t>
-                                    </ul>
+<!--                                    <ul class="room-features extra-service d-flex align-items-center">-->
+<!--                                        <t t-foreach="room_type.room_amenities_ids" t-as="amenity">-->
+<!--                                             <li><i class="bi bi-circle"></i><t t-esc="amenity.name"/>-->
+<!--                                            </li>-->
+<!--                                        </t>-->
+<!--                                    </ul>-->
                                     <ul class="room-features d-flex align-items-center">
                                         <li>
                                             <svg width="30" height="30" viewBox="0 0 30 30"
@@ -372,14 +372,7 @@
                                                         <option value="4">04</option>
                                                     </select>
                                                 </div>
-                                                <!--                                                <div class="wp-block-text__inside-wrapper select-items">-->
-                                                <!--                                                    <select name="Room"-->
-                                                <!--                                                            id="room" style="">-->
-                                                <!--                                                        <t t-foreach="rooms" t-as="room">-->
-                                                <!--                                                            <option t-att-value="room.id" t-esc="room.name"/>-->
-                                                <!--                                                        </t>-->
-                                                <!--                                                    </select>-->
-                                                <!--                                                </div>-->
+
                                                 <div class="wp-block-text__inside-wrapper">
                                                     <label class="col-form-label col-sm-auto s_website_form_label "
                                                            style="width: 100px">
@@ -394,22 +387,17 @@
                                                 </div>
                                                 <div class="row">
                                                     <div class="col-xl-6">
-                                                        <!--                                                        <div class="searchbox-input date-picker-input input__list">-->
-                                                        <!--                                                            <input autocomplete="off" placeholder="Check In"-->
-                                                        <!--                                                                   type="text"-->
-                                                        <!--                                                                   name="Checkin"-->
-                                                        <!--                                                                   id="datepicker16" value="" class="claender"/>-->
-                                                        <!--                                                        </div>-->
+
                                                         <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
-                                                             id="datetimepicker647210241874828"
+                                                             id="datetimepicker64721024"
                                                              data-target-input="nearest">
                                                             <input type="text"
                                                                    class="form-control datetimepicker-input s_website_form_input"
                                                                    name="Checkin" placeholder="Checkin" id="checkin"
-                                                                   data-target="#datetimepicker647210241874828"
+                                                                   data-target="#datetimepicker64721024"
                                                                    data-fill-with="undefined"/>
                                                             <div class="input-group-append" data-toggle="datetimepicker"
-                                                                 data-target="#datetimepicker647210241874828">
+                                                                 data-target="#datetimepicker64721024">
                                                                 <div class="input-group-text">
                                                                     <i class="fa fa-calendar"></i>
                                                                 </div>
@@ -423,7 +411,7 @@
                                                              data-target-input="nearest">
                                                             <input type="text"
                                                                    class="form-control datetimepicker-input s_website_form_input"
-                                                                   name="Checkout" placeholder="Checkout" id="checkout"
+                                                                   name="checkout" placeholder="Checkout" id="checkout"
                                                                    data-target="#datetimepicker647210241874829"
                                                                    data-fill-with="undefined"/>
                                                             <div class="input-group-append" data-toggle="datetimepicker"
@@ -433,11 +421,6 @@
                                                                 </div>
                                                             </div>
                                                         </div>
-                                                        <!--                                                        <div class="searchbox-input date-picker-input input__list">-->
-                                                        <!--                                                            <input autocomplete="off" placeholder="Check Out"-->
-                                                        <!--                                                                   type="text" name="checkout"-->
-                                                        <!--                                                                   id="datepicker17" value="" class="claender"/>-->
-                                                        <!--                                                        </div>-->
                                                     </div>
                                                 </div>
                                                 <div class="wp-block-text__inside-wrapper ">
