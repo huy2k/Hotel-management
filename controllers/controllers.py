@@ -19,7 +19,7 @@ class Hotel(http.Controller):
     @http.route('/room-types/<model("hotel1.room.type"):room_type>', auth='public', website=True)
     def room_type_website(self, room_type):
         rooms = http.request.env['hotel1.room'].sudo().search(
-            ['&', ('room_type', '=', room_type.id), ('status', '=', 'open')])
+            ['&', ('room_type', '=', room_type.id), '|', ('status', '=', 'open'), ('status', '=', 'reservation')])
         return http.request.render('Hotel-management.room_type_website', {
             'room_type': room_type, 'rooms': rooms
         })
@@ -35,7 +35,7 @@ class Hotel(http.Controller):
                 website=True)
     def room_type(self, room_type):
         rooms = http.request.env['hotel1.room'].sudo().search(
-            ['&', ('room_type', '=', room_type.id), ('status', '=', 'open')])
+            ['&', ('room_type', '=', room_type.id), '|', ('status', '=', 'open'), ('status', '=', 'reservation')])
         room_ids = []
 
         print(rooms)
@@ -145,7 +145,7 @@ class Hotel(http.Controller):
                             rooms += room_open
 
         # print("so phong trong sau check ngay", len(set(rooms)))
-        # rooms = set(rooms)
+        rooms = set(rooms)
 
         return http.request.render('Hotel-management.search_rooms', {
             'check_in': checkin, 'check_out': checkout, 'rooms': rooms, 'count_room': len(set(rooms))
