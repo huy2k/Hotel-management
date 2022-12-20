@@ -92,13 +92,12 @@
                                         <div class="price-tag">
                                             <span><t t-esc="room.price"></t></span> / Per Night
                                         </div>
-                                        <h3><a href=""><t t-esc="room.name"/></a></h3>
+                                        <h3> <t t-esc="room.name"/></h3>
                                         <div class="bed-and-person d-flex align-items-center">
-                                            <div class="bed-qty">
-                                                <p>Room type: <t t-esc="room.room_type.name"/></p>
-                                            </div>
+
                                             <div class="persons">
-                                                <p><img src="fonts/persons.svg" alt=""/><t t-esc="room.capacity"/>
+                                                <p>Type: <t t-esc="room.room_type.name"/></p>
+                                                <p><t t-esc="room.capacity"/>
                                                     Guest</p>
                                             </div>
                                             <div class="bed-qty">
