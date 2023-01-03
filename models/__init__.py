@@ -1,3 +1,3 @@
 # -*- coding: utf-8 -*-
 
-from . import room, service, partner, customer, employee, room_stage, reversation, hotel_reservation
+from . import room, service, partner, employee, room_stage, folio, reservation

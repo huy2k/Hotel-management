@@ -16,7 +16,7 @@
                         <field name="currency_id"/>
                     </group>
                     <notebook name="Amenities">
-                        <page name="Amenities">
+                        <page name="Amenities" string="Amenities">
                             <field name="room_amenities_ids"/>
                         </page>
                     </notebook>

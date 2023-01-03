@@ -2,33 +2,34 @@
 
     <template id="search_rooms">
         <xpath expr="." position="inside">
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/all.css"/>
 
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap.min.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap.min.css"/>
 
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/boxicons.min.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/boxicons.min.css"/>
 
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap-icons.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap-icons.css"/>
 
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery-ui.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery.fancybox.min.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/swiper-bundle.min.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/slick-theme.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/slick.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/nice-select.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/magnific-popup.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/odometer.css"/>
-            <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/jquery-ui.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/jquery.fancybox.min.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/swiper-bundle.min.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/slick-theme.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/slick.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/nice-select.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/magnific-popup.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/odometer.css"/>
+            <link rel="stylesheet" href="/Hotel-management/static/css/style.css"/>
         </xpath>
         <t t-call="website.layout">
             <t t-set="title">Book Room</t>
             <div class="oe_structure"></div>
             <div class="room-suits-details-page pt-30 mb-40">
                 <div class="container mb-30">
-                    <div class="row">
-                        <form role="form" action="/search/room" method="POST">
+
+                    <form role="form" action="/search/room" method="POST">
+                        <div class="row">
                             <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-lg-6">
                                 <h4>Check in: </h4>
 
                                 <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
@@ -47,7 +48,7 @@
                                 </div>
                             </div>
 
-                            <div class="col-sm-6">
+                            <div class="col-sm-6 col-lg-6">
                                 <h4>Check out: </h4>
 
                                 <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
@@ -70,8 +71,9 @@
                                     <button type="submit" class="btn--primary4 eg-btn">Check Now</button>
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                        </div>
+                    </form>
+
                 </div>
                 <div class="container">
                     <div class="row mt-10 mb-10">
@@ -92,7 +94,7 @@
                                         <div class="price-tag">
                                             <span><t t-esc="room.price"></t></span> / Per Night
                                         </div>
-                                        <h3> <t t-esc="room.name"/></h3>
+                                        <h3><t t-esc="room.name"/></h3>
                                         <div class="bed-and-person d-flex align-items-center">
 
                                             <div class="persons">
@@ -164,7 +166,7 @@
                                 </div>
                             </div>
 
-                             <div class="row s_col_no_resize s_col_no_bgcolor">
+                            <div class="row s_col_no_resize s_col_no_bgcolor">
                                 <label class="col-form-label col-sm-auto s_website_form_label"
                                        style="width: 200px">
                                     <span class="s_website_form_label_content">Identification</span>
@@ -172,7 +174,7 @@
                                 </label>
                                 <div class="col-sm">
                                     <input type="text" class="form-control s_website_form_input" name="identification"
-                                           required="1"  id="identification"/>
+                                           required="1" id="identification"/>
                                 </div>
                             </div>
 

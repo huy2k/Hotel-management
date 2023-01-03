@@ -2,7 +2,7 @@
 
 from datetime import timedelta
 from odoo import _, api, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import ValidationError, MissingError
 
 
 class HotelReservation(models.Model):
@@ -174,6 +174,52 @@ class HotelReservation(models.Model):
                 raise ValidationError(
                     _("""Check-out date should be greater """ """than Check-in date.""")
                 )
+            for reservation in self:
+                reserv_checkin = reservation.checkin
+                reserv_checkout = reservation.checkout
+                room_bool = False
+                for line_id in reservation.reservation_line:
+                    for room in line_id.reserve:
+                        if room.room_reservation_line_ids:
+                            for reserv in room.room_reservation_line_ids.search(
+                                    [
+                                        ("status", "in", ('draft', "confirm", "done")),
+                                        ("room_id", "=", room.id),
+                                    ]
+                            ):
+                                check_in = reserv.check_in
+                                check_out = reserv.check_out
+                                if check_in <= reserv_checkin <= check_out:
+                                    room_bool = True
+                                if check_in <= reserv_checkout <= check_out:
+                                    room_bool = True
+                                if (
+                                        reserv_checkin <= check_in
+                                        and reserv_checkout >= check_out
+                                ):
+                                    room_bool = True
+                                r_checkin = reservation.checkin.date()
+                                r_checkout = reservation.checkout.date()
+                                check_intm = reserv.check_in.date()
+                                check_outtm = reserv.check_out.date()
+                                range1 = [r_checkin, r_checkout]
+                                range2 = [check_intm, check_outtm]
+                                overlap_dates = self.check_overlap(
+                                    *range1
+                                ) & self.check_overlap(*range2)
+                                if room_bool:
+                                    raise MissingError(
+                                        _(
+                                            "You tried to"
+                                            "Reservation with room"
+                                            " those already "
+                                            "reserved in this "
+                                            "Reservation Period. "
+                                            "Overlap Dates are "
+                                            "%s"
+                                        )
+                                        % overlap_dates
+                                    )
 
     @api.model
     def create(self, vals):
@@ -185,6 +231,7 @@ class HotelReservation(models.Model):
         vals["reservation_no"] = (
             self.env["ir.sequence"].next_by_code("hotel1.reservation")
         )
+
         return super(HotelReservation, self).create(vals)
 
     def write(self, vals):
@@ -258,7 +305,7 @@ class HotelReservation(models.Model):
                                     "state": "assigned",
                                     "reservation_id": reservation.id,
                                 }
-                                room.write({"status": "booking"})
+                                room.write({"status": "reservation"})
                         else:
                             self.state = "confirm"
                             vals = {
@@ -268,7 +315,7 @@ class HotelReservation(models.Model):
                                 "state": "assigned",
                                 "reservation_id": reservation.id,
                             }
-                            room.write({"status": "booking"})
+                            room.write({"status": "reservation"})
                     else:
                         self.state = "confirm"
                         vals = {
@@ -278,7 +325,7 @@ class HotelReservation(models.Model):
                             "state": "assigned",
                             "reservation_id": reservation.id,
                         }
-                        room.write({"status": "booking"})
+                        room.write({"status": "reservation"})
                     reservation_line_obj.create(vals)
         return True
 
@@ -372,21 +419,6 @@ class HotelReservation(models.Model):
         template = self.env.ref('Hotel-management.hotel_reservation_email_template').id
         template_id = self.env['mail.template'].browse(template)
         template_id.send_mail(self.id, force_send=True)
-
-
-
-    # def open_folio_view(self):
-    #     folios = self.mapped("folio_id")
-    #     action = self.env.ref("hotel.open_hotel_folio1_form_tree_all").read()[0]
-    #     if len(folios) > 1:
-    #         action["domain"] = [("id", "in", folios.ids)]
-    #     elif len(folios) == 1:
-    #         action["views"] = [(self.env.ref("hotel.view_hotel_folio_form").id, "form")]
-    #         action["res_id"] = folios.id
-    #     else:
-    #         action = {"type": "ir.actions.act_window_close"}
-    #     return action
-
 
 class HotelReservationLine(models.Model):
     _name = "hotel1.reservation.line"

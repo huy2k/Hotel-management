@@ -3,8 +3,7 @@
     'name': "Hotel huy",
 
     'summary': """
-        Short (2 phrase/line) summary of the module's purpose, used as
-        subtitle on modules listing """,
+       Hotel management """,
 
     'description': """
         Long description of module's purpose
@@ -21,8 +20,8 @@
 
     # always loaded
     'data': [
-        'security/ir.model.access.csv',
         'security/security.xml',
+        'security/ir.model.access.csv',
         'data/hotel_customer_sequence.xml',
         'data/hotel_sequence.xml',
         'data/hotel_reservation_sequence.xml',
@@ -43,11 +42,6 @@
         'views/web-form.xml',
         'views/invoices.xml',
         'views/frontend/home.xml',
-
-        # 'report/report_view.xml',
-        # 'report/hotel_folio_report_template.xml',
-        # 'wizard/hotel_wizard.xml',
-
         'views/frontend/bookform.xml',
         'views/frontend/roomtype_website.xml',
         'views/frontend/search_booking.xml',
@@ -57,11 +51,20 @@
         'views/menu_views.xml',
     ],
     # 'assets': {
-    #     'web.assets_frontend':  [
-    #         '/Hotel-management/static/css/all.css',
-    #         '/Hotel-management/static/css/style.css',
-    #         '/Hotel-management/static/css/odometer.css',
-    #     ],
-    # },
-
+    #     'web.assets_frontend': [
+    #         'Hotel-management/static/css/all.css',
+    #         'Hotel-management/static/css/bootstrap.min.css',
+    #         'Hotel-management/static/css/bootstrap-icons.css',
+    #         'Hotel-management/static/css/boxicons.min.css',
+    #         'Hotel-management/static/css/jquery-ui.css',
+    #         'Hotel-management/static/css/jquery.fancybox.min.css',
+    #         'Hotel-management/static/css/slick-theme.css',
+    #         'Hotel-management/static/css/slick.css',
+    #         'Hotel-management/static/css/magnific-popup.css',
+    #         'Hotel-management/static/css/nice-select.css',
+    #         'Hotel-management/static/css/swiper-bundle.min.css',
+    #         'Hotel-management/static/css/odometer.css',
+    #         'Hotel-management/static/css/style.css',
+    #     ]
+    # }
 }

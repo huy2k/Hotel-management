@@ -14,6 +14,11 @@
                         <field name="capacity"/>
                         <field name="status"/>
                     </group>
+                    <notebook>
+                        <page name="reservation" string="reservations">
+                            <field name="room_line_ids"/>
+                        </page>
+                    </notebook>
                 </sheet>
             </form>
         </field>

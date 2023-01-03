@@ -31,10 +31,10 @@ class Room(models.Model):
     status = fields.Selection([
         ('open', 'Open'),
         ('close', 'Close'),
-        ('booking', 'Booking'),
+        ('booking', 'Rental'),
         ('reservation', "Reservation")
     ], default="open")
-    # booking_id = fields.Many2one("hotel1.booking")
+    room_line_ids = fields.One2many("hotel1.room.reservation.line", inverse_name='room_id')
     capacity = fields.Integer(string="Capacity", related='room_type.limit_person')
     room_reservation_line_ids = fields.One2many(
         "hotel1.room.reservation.line", "room_id", string="Room Reserve Line"

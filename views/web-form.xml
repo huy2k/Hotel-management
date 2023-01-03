@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+
 
         <record id="hotel_room_type_form_view" model="website.menu">
             <field name="name">Room</field>
@@ -711,24 +711,24 @@
             <field name="sequence" type="int">99</field>
         </record>
 
-        <template id="index">
+        <template id="room_type_websites">
             <xpath expr="." position="inside">
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap.min.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/boxicons.min.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap-icons.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery-ui.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery.fancybox.min.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/swiper-bundle.min.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick-theme.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/nice-select.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/magnific-popup.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/odometer.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/all.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap.min.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/boxicons.min.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap-icons.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/jquery-ui.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/jquery.fancybox.min.css"/>
+<!--                <link rel="stylesheet" href="/Hotel-management/static/css/swiper-bundle.min.css"/>-->
+<!--                <link rel="stylesheet" href="/Hotel-management/static/css/slick-theme.css"/>-->
+<!--                <link rel="stylesheet" href="/Hotel-management/static/css/slick.css"/>-->
+                <link rel="stylesheet" href="/Hotel-management/static/css/nice-select.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/magnific-popup.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/odometer.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/style.css"/>
             </xpath>
             <t t-call="website.layout">
-                <t t-set="title">Room</t>
+                <t t-set="title">Room Type</t>
                 <div class="oe_structure">
                 </div>
                 <div class="home4-rooms mt-20  mb-120">
@@ -751,21 +751,23 @@
                                                  alt=""/>
                                             <div class="room-content">
 
-                                                <h3>
-                                                    <a t-att-href="'/room-types/%s' %  slug(room_type)"><t t-esc="room_type.name"></t></a>
+                                                <h3 style="color: aqua;">
+                                                    <a t-att-href="'/room-types/%s' %  slug(room_type)"><t
+                                                            t-esc="room_type.name"></t></a>
                                                 </h3>
                                                 <div class="bed-and-person d-flex align-items-center">
                                                     <div class="bed-qty">
                                                         <p><img t-attf-src="data:image/jpg;base64,{{ room_type.img_room_type }}"
                                                                 alt=""/> <t t-esc="room_type.name"/></p>
                                                     </div>
-                                                    <h3><t t-esc="room_type.name"/></h3>
+                                                    <h3 style="color: aqua;"><t t-esc="room_type.name"/></h3>
                                                     <div class="price-tag">
-                                                    <span>$<t t-esc="room_type.price"/></span>
-                                                    / Per Night
-                                                </div>
+                                                        <span>$<t t-esc="room_type.price"/></span>
+                                                        / Per Night
+                                                    </div>
                                                     <div class="persons">
-                                                        <p><img src="assets/images/icons/persons1.svg" alt=""/><t t-esc="room_type.limit_person"/>
+                                                        <p><img src="assets/images/icons/persons1.svg" alt=""/><t
+                                                                t-esc="room_type.limit_person"/>
                                                             Guest</p>
                                                     </div>
                                                 </div>
@@ -1027,6 +1029,4 @@
             </t>
         </template>
 
-
-    </data>
 </odoo>

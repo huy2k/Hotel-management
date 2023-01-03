@@ -40,7 +40,7 @@
                     <button
                             name="set_to_draft_reservation"
                             string="Set to Draft"
-                            states="cancel"
+                            states="cancel,confirm"
                             class="oe_highlight"
                             type="object"
                     />
@@ -216,7 +216,7 @@
         <field name="arch" type="xml">
             <graph string="Reservation" type="pie">
                 <field name="customer_id"/>
-                <field name="reservation_no"/>
+                <field name="state"/>
             </graph>
         </field>
     </record>
@@ -245,6 +245,8 @@
         <field name="res_model">hotel1.reservation</field>
         <field name="view_mode">tree,form,calendar,graph</field>
     </record>
+
+
 
 
     <!--    <menuitem-->

@@ -8,18 +8,19 @@ from odoo.exceptions import ValidationError
 
 
 class Hotel(http.Controller):
+    """into /index, /room_type, /searchs """
 
     @http.route('/index', type='http', auth='public', website=True)
     def index1(self):
         room_types = http.request.env['hotel1.room.type'].sudo().search([])
-        return http.request.render('Hotel-management.index2', {
+        return http.request.render('Hotel-management.my_index', {
             'room_types': room_types
         })
 
     @http.route('/room-types/<model("hotel1.room.type"):room_type>', auth='public', website=True)
     def room_type_website(self, room_type):
         rooms = http.request.env['hotel1.room'].sudo().search(
-            ['&', ('room_type', '=', room_type.id), '|', ('status', '=', 'open'), ('status', '=', 'reservation')])
+            ['&', ('room_type', '=', room_type.id), ('status', '!=', 'close')])
         return http.request.render('Hotel-management.room_type_website', {
             'room_type': room_type, 'rooms': rooms
         })
@@ -27,20 +28,8 @@ class Hotel(http.Controller):
     @http.route('/room-type', auth='public', website=True)
     def index(self):
         room_types = http.request.env['hotel1.room.type'].sudo().search([])
-        return http.request.render('Hotel-management.index', {
+        return http.request.render('Hotel-management.room_type_websites', {
             'room_types': room_types
-        })
-
-    @http.route('/room-type/<model("hotel1.room.type"):room_type>', auth="public",
-                website=True)
-    def room_type(self, room_type):
-        rooms = http.request.env['hotel1.room'].sudo().search(
-            ['&', ('room_type', '=', room_type.id), '|', ('status', '=', 'open'), ('status', '=', 'reservation')])
-        room_ids = []
-
-        print(rooms)
-        return http.request.render('Hotel-management.view_room', {
-            'room_type': room_type, 'rooms': rooms
         })
 
     @http.route('/rooms/<model("hotel1.room"):room>', auth="public",
@@ -98,9 +87,11 @@ class Hotel(http.Controller):
             checkin = datetime.today()
             checkout = datetime.today() + timedelta(days=1)
         else:
-            if kwargs.get('checkin') == "":
+            today = datetime.today()
+            format = '%m/%d/%Y %H:%M %p'
+            if kwargs.get('checkin') == "" or today > datetime.strptime(kwargs.get('checkin'), format):
                 raise ValidationError("Invalid validate")
-            if kwargs.get('checkout') == "":
+            if kwargs.get('checkout') == "" or today > datetime.strptime(kwargs.get('checkout'), format):
                 raise ValidationError("Invalid validate")
             checkin = parser.parse(kwargs.get('checkin'))
             checkout = parser.parse(kwargs.get('checkout'))
@@ -137,14 +128,13 @@ class Hotel(http.Controller):
                                     and reserv_checkout >= check_out
                             ):
                                 room_bool = True
-                            # print(room.id)
+
                             print(room.name)
                             print(room_bool)
                         if not room_bool:
                             room_open = http.request.env["hotel1.room"].search([('id', '=', room.id)])
                             rooms += room_open
 
-        # print("so phong trong sau check ngay", len(set(rooms)))
         rooms = set(rooms)
 
         return http.request.render('Hotel-management.search_rooms', {
@@ -228,10 +218,6 @@ class HotelCustomerPortal(CustomerPortal):
 
         if 'count_reservation' in counters:
             values['count_reservation'] = Reservations.search_count([('customer_id', '=', partner.id)])
-            # values['count_reservation'] = Reservations.search_count(self._prepare_reservation_domain(partner))\
-            #  if Reservations.check_access_rights('read', raise_exception=False) else 0
-
-        print(values)
         return values
 
     def _prepare_reservation_domain(self, partner):

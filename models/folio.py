@@ -1,6 +1,7 @@
 from odoo import models, fields, api, _
 from odoo.exceptions import ValidationError
 from datetime import date, datetime
+from datetime import timedelta
 
 
 class Folio(models.Model):
@@ -76,7 +77,7 @@ class Folio(models.Model):
     @api.depends('total_room', 'total_service', 'service_line_ids')
     def _compute_total_price(self):
         total = 0.0
-        total_all = 0.0
+
         for i in self:
             for line in i.service_line_ids:
                 total += line.total
@@ -102,12 +103,16 @@ class Folio(models.Model):
             if self.checkin_date.date() < self.create_date.date():
                 raise ValidationError(
                     _(
-                        """Room line check in date should be """
+                        """Room check in date should be """
                         """greater than the current date."""
                     )
                 )
 
-    # @api.onchange("checkin_date", "checkout_date", 'duration')
+
+    def check_overlap(self, date1, date2):
+        delta = date2 - date1
+        return {date1 + timedelta(days=i) for i in range(delta.days + 1)}
+
     @api.depends("checkin_date", "checkout_date", 'duration')
     # def _onchange_checkin_checkout_dates(self):
     def _compute__checkin_checkout_dates(self):
@@ -143,7 +148,8 @@ class Folio(models.Model):
 
     def action_done(self):
         self.hotel_policy = 'done'
-        self.room_id.status = 'open'
+        if self.room_id.status != 'reservation':
+            self.room_id.status = 'open'
 
     def action_checkin(self):
         if self.room_id:
@@ -169,11 +175,7 @@ class Folio(models.Model):
         if vals.get("duration") and vals.get("room_id"):
             vals["total_room"] = vals.get("duration") * vals.get("price_room")
         res = super(Folio, self).write(vals)
-        reservation_line_obj = self.env["hotel1.room.reservation.line"]
-        for folio in self:
-            reservations = reservation_line_obj.search(
-                [("reservation_id", "=", folio.reservation_id.id)]
-            )
+
         return res
 
     def create_folio_invoice(self):
@@ -201,7 +203,7 @@ class Folio(models.Model):
                 'company_id': folio_req.customer_id.company_id.id or False,
             }
             res = account_invoice_obj.create(invoice_vals)
-            product = folio_req.service_line_ids.service_line_id
+
             invoice_line_account_id = False
 
             invoice_line_vals1 = {
@@ -218,8 +220,7 @@ class Folio(models.Model):
                 'quantity': folio_req.service_line_ids.quantity,
                 'product_id': folio_req.service_line_ids.service_line_id.product_id.id,
             }
-            res1 = res.write({'invoice_line_ids': ([(0, 0, invoice_line_vals)])})
-            res2 = res.write({'invoice_line_ids': ([(0, 0, invoice_line_vals1)])})
+
             list_of_ids.append(res.id)
 
             if list_of_ids:
@@ -282,7 +283,7 @@ class Folio(models.Model):
     @api.onchange("room_type_id")
     def on_change_categ(self):
         """
-        When you change categ_id it check checkin and checkout are
+        When you change categ_id it checks checkin and checkout are
         filled or not if not then raise warning
         -----------------------------------------------------------
         @param self: object pointer
@@ -293,7 +294,8 @@ class Folio(models.Model):
         room_ids = []
         for room in hotel_room_ids:
             room_ids.append(room.id)
-        domain = {"room_id": ['&', ("id", "in", room_ids), ('status', '=', 'open')]}
+        domain = {
+            "room_id": ['&', ("id", "in", room_ids), '|', ('status', '=', 'open'), ('status', '=', 'reservation')]}
         return {"domain": domain}
 
 

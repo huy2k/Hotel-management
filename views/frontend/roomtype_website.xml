@@ -1,24 +1,24 @@
 <odoo>
-    <data>
+<!--    <data>-->
         <template id="room_type_website">
             <xpath expr="." position="inside">
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/all.css"/>
 
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap.min.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap.min.css"/>
 
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/boxicons.min.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/boxicons.min.css"/>
 
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap-icons.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap-icons.css"/>
 
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery-ui.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery.fancybox.min.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/swiper-bundle.min.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick-theme.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/slick.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/nice-select.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/magnific-popup.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/odometer.css"/>
-                <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/jquery-ui.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/jquery.fancybox.min.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/swiper-bundle.min.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/slick-theme.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/slick.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/nice-select.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/magnific-popup.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/odometer.css"/>
+                <link rel="stylesheet" href="/Hotel-management/static/css/style.css"/>
             </xpath>
             <t t-call="website.layout">
                 <t t-set="title">Room type</t>
@@ -98,12 +98,12 @@
                                     </p>
                                     <h4>Room Feature.</h4>
 
-<!--                                    <ul class="room-features extra-service d-flex align-items-center">-->
-<!--                                        <t t-foreach="room_type.room_amenities_ids" t-as="amenity">-->
-<!--                                             <li><i class="bi bi-circle"></i><t t-esc="amenity.name"/>-->
-<!--                                            </li>-->
-<!--                                        </t>-->
-<!--                                    </ul>-->
+                                    <!--                                    <ul class="room-features extra-service d-flex align-items-center">-->
+                                    <!--                                        <t t-foreach="room_type.room_amenities_ids" t-as="amenity">-->
+                                    <!--                                             <li><i class="bi bi-circle"></i><t t-esc="amenity.name"/>-->
+                                    <!--                                            </li>-->
+                                    <!--                                        </t>-->
+                                    <!--                                    </ul>-->
                                     <ul class="room-features d-flex align-items-center">
                                         <li>
                                             <svg width="30" height="30" viewBox="0 0 30 30"
@@ -386,42 +386,41 @@
                                                     </select>
                                                 </div>
                                                 <div class="row">
-                                                    <div class="col-xl-6">
 
-                                                        <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
-                                                             id="datetimepicker64721024"
-                                                             data-target-input="nearest">
-                                                            <input type="text"
-                                                                   class="form-control datetimepicker-input s_website_form_input"
-                                                                   name="Checkin" placeholder="Checkin" id="checkin"
-                                                                   data-target="#datetimepicker64721024"
-                                                                   data-fill-with="undefined"/>
-                                                            <div class="input-group-append" data-toggle="datetimepicker"
-                                                                 data-target="#datetimepicker64721024">
-                                                                <div class="input-group-text">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </div>
-                                                            </div>
-                                                        </div>
 
-                                                    </div>
-                                                    <div class="col-xl-6">
-                                                        <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
-                                                             id="datetimepicker647210241874829"
-                                                             data-target-input="nearest">
-                                                            <input type="text"
-                                                                   class="form-control datetimepicker-input s_website_form_input"
-                                                                   name="checkout" placeholder="Checkout" id="checkout"
-                                                                   data-target="#datetimepicker647210241874829"
-                                                                   data-fill-with="undefined"/>
-                                                            <div class="input-group-append" data-toggle="datetimepicker"
-                                                                 data-target="#datetimepicker647210241874829">
-                                                                <div class="input-group-text">
-                                                                    <i class="fa fa-calendar"></i>
-                                                                </div>
+                                                    <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                                         id="datetimepicker64721024"
+                                                         data-target-input="nearest">
+                                                        <input type="text"
+                                                               class="form-control datetimepicker-input s_website_form_input"
+                                                               name="Checkin" placeholder="Checkin" id="checkin"
+                                                               data-target="#datetimepicker64721024"
+                                                               data-fill-with="undefined"/>
+                                                        <div class="input-group-append" data-toggle="datetimepicker"
+                                                             data-target="#datetimepicker64721024">
+                                                            <div class="input-group-text">
+                                                                <i class="fa fa-calendar"></i>
                                                             </div>
                                                         </div>
                                                     </div>
+
+
+                                                    <div class="s_website_form_datetime input-group date s_website_form_datepicker_initialized"
+                                                         id="datetimepicker647210241874829"
+                                                         data-target-input="nearest">
+                                                        <input type="text"
+                                                               class="form-control datetimepicker-input s_website_form_input"
+                                                               name="checkout" placeholder="Checkout" id="checkout"
+                                                               data-target="#datetimepicker647210241874829"
+                                                               data-fill-with="undefined"/>
+                                                        <div class="input-group-append" data-toggle="datetimepicker"
+                                                             data-target="#datetimepicker647210241874829">
+                                                            <div class="input-group-text">
+                                                                <i class="fa fa-calendar"></i>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+
                                                 </div>
                                                 <div class="wp-block-text__inside-wrapper ">
                                                     <textarea placeholder="Note (If Any)"></textarea>
@@ -560,23 +559,23 @@
             <field name="arch" type="xml">
                 <t t-name="room_type_website1">
                     <xpath expr="." position="inside">
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/all.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/all.css"/>
 
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap.min.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap.min.css"/>
 
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/boxicons.min.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/boxicons.min.css"/>
 
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/bootstrap-icons.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/bootstrap-icons.css"/>
 
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery-ui.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/jquery.fancybox.min.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/swiper-bundle.min.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/slick-theme.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/slick.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/nice-select.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/magnific-popup.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/odometer.css"/>
-                        <link rel="stylesheet" href="/theme_hotel/static/src/css/style.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/jquery-ui.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/jquery.fancybox.min.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/swiper-bundle.min.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/slick-theme.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/slick.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/nice-select.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/magnific-popup.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/odometer.css"/>
+                        <link rel="stylesheet" href="/Hotel-management/static/css/style.css"/>
                     </xpath>
                     <t t-call="website.layout">
                         <t t-set="title">Room Type</t>
@@ -930,21 +929,21 @@
                                                             </select>
                                                         </div>
                                                         <div class="row">
-                                                            <div class="col-xl-6">
-                                                                <div class="searchbox-input date-picker-input input__list">
-                                                                    <input autocomplete="off" placeholder="Check In"
-                                                                           type="text"
-                                                                           name="Checkin"
-                                                                           id="datepicker16" value="" class="claender"/>
-                                                                </div>
+
+                                                            <div class="searchbox-input date-picker-input input__list">
+                                                                <input autocomplete="off" placeholder="Check In"
+                                                                       type="text"
+                                                                       name="Checkin"
+                                                                       id="datepicker16" value="" class="claender"/>
                                                             </div>
-                                                            <div class="col-xl-6">
-                                                                <div class="searchbox-input date-picker-input input__list">
-                                                                    <input autocomplete="off" placeholder="Check Out"
-                                                                           type="text" name="checkout"
-                                                                           id="datepicker17" value="" class="claender"/>
-                                                                </div>
+
+
+                                                            <div class="searchbox-input date-picker-input input__list">
+                                                                <input autocomplete="off" placeholder="Check Out"
+                                                                       type="text" name="checkout"
+                                                                       id="datepicker17" value="" class="claender"/>
                                                             </div>
+
                                                         </div>
                                                         <div class="wp-block-text__inside-wrapper ">
                                                             <textarea placeholder="Note (If Any)"></textarea>
@@ -1076,5 +1075,5 @@
                 </t>
             </field>
         </record>
-    </data>
+<!--    </data>-->
 </odoo>

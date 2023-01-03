@@ -15,15 +15,15 @@
     <menuitem id="hotel1_customer_menu" name="Customer" action="hotel1_customer_action" parent="hotel_management_menu"/>
     <menuitem id="hotel1_service_type_menu" name="Service Type" action="action_hotel_service_type"
               parent="hotel1_configuration_menu"/>
-    <menuitem id="hotel1_employee_menu" name="Employee" action="hotel_employee_action"
-              parent="hotel1_configuration_menu"/>
+<!--    <menuitem id="hotel1_employee_menu" name="Employee" action="hotel_employee_action"-->
+<!--              parent="hotel1_configuration_menu"/>-->
     <!--   <menuitem id="hotel1_booking_menu" name="Booking"  action="my_hotel.hotel1_booking_action"-->
     <!--            parent="hotel_management_menu"/>-->
     <menuitem id="hotel1_folio_menu" name="Folio" action="hotel1_folio_action"
               parent="hotel_management_menu" sequence="4"/>
     <menuitem id="hotel1_amenities_menu" name="Amentities" action="action_hotel_amenities"
               parent="hotel1_configuration_menu"/>
-    <menuitem id="hotel1_refund_menu" name="Refund" action="action_hotel_refund"
+    <menuitem id="hotel1_refund_menu" name="Cancel Room" action="action_hotel_refund"
               parent="hotel1_configuration_menu"/>
     <menuitem
             name="Reservations"
